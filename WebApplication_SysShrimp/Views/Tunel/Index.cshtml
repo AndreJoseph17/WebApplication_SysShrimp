@@ -1,0 +1,171 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Mantenimiento de túnel";
+}
+<h3>@ViewData["Title"]</h3>
+
+<body>
+    <div class="card">
+        <div class="card-body" style="padding-left:20%; padding-right:20%;">
+            <form class="row g-3">
+                <div class="col-md-6" hidden>
+                    <label for="idTunel" class="form-label">Id</label>
+                    <input type="number" class="form-control" id="idTunel">
+                </div>
+                <div class="col-md-5">
+                    <label for="codigoTunel" class="form-label">Código</label>
+                    <input type="text" class="form-control" id="codigoTunel" placeholder="Código del tunel">
+                </div>
+                <div class="col-md-5">
+                    <label for="nombreTunel" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="nombreTunel" placeholder="Nombre del túnel">
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-primary" style="margin-top: 32px;"
+                            data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
+                        <i class="bi bi-search"></i>
+                        Buscar
+                    </button>
+                </div>
+                <div class="col-md-3">
+                    <label for="pesoActual" class="form-label">Peso Actual</label>
+                    <div class=" input-group mb-3">
+                        <input type="number" class="form-control" id="pesoActual" placeholder="Peso actual">
+                        <span class="input-group-text" id="basic-addon2">.gr</span>
+                    </div>
+                </div>
+                <div class="col-md-3 ">
+                    <label for="pesoMinimo" class="form-label">Peso Mínimo</label>
+                    <div class="input-group mb-3">
+                        <input type="number" class="form-control" id="pesoMinimo" placeholder="Peso mínimo">
+                        <span class="input-group-text" id="basic-addon2">.gr</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label for="pesoMaximo" class="form-label">Peso Máximo</label>
+                    <div class=" input-group mb-3">
+                        <input type="number" class="form-control" id="pesoMaximo" placeholder="Peso máximo">
+                        <span class="input-group-text" id="basic-addon2">.gr</span>
+                    </div>
+                </div>
+                <div class="col-md-4 ">
+                    <label for="temperatura" class="form-label">Temperatura Actual</label>
+                    <div class="input-group mb-3">
+                        <input type="number" class="form-control" id="temperatura" placeholder="Ej: 60">
+                        <span class="input-group-text" id="basic-addon2">° C</span>
+                    </div>
+                </div>
+                <div class="col-md-5" style="margin-left: 20px;">
+                    <label for="activoAlarma" class="form-label">Alarma</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="alarmaActiva">
+                        <label class="form-check-label" for="alarmaActiva">
+                            Activo
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="alarmaDesactiva" checked>
+                        <label class="form-check-label" for="alarmaDesactiva">
+                            Inactivo
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="ipEntrada" class="form-label">Dirección Ip Entrada</label>
+                    <input type="text" class="form-control" id="ipEntrada" placeholder="Ej: 192.168.100.1">
+                </div>
+                <div class="col-md-2">
+                    <label for="puertoEntrada" class="form-label">Puerto Entrada</label>
+                    <input type="text" class="form-control" id="puertoEntrada" placeholder="Ej: 8001">
+                </div>
+                <div class="col-md-4">
+                    <label for="ipSalida" class="form-label">Dirección Ip Salida</label>
+                    <input type="text" class="form-control" id="ipSalida" placeholder="Ej: 192.168.100.1">
+                </div>
+                <div class="col-md-2">
+                    <label for="puertoSalida" class="form-label">Puerto Salida</label>
+                    <input type="text" class="form-control" id="ipEntrada" placeholder="Ej: 8001">
+                </div>
+                <div class="col-md-4">
+                    <label for="estadoTunel" class="form-label">Estado</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault2" id="activoTunel">
+                        <label class="form-check-label" for="activoTunel">
+                            Activo
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault2" id="inactivoTunel" checked>
+                        <label class="form-check-label" for="inactivoTunel">
+                            Inactivo
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-6" style="padding-top: 40px;">
+                    <button type="submit" class="btn btn-outline-dark" style="margin-right: 25px;">Limpiar</button>
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+<!--Modal de búsqueda de Túnel-->
+<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Búsqueda</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3">
+                    <div class="col-md-8">
+                        <label for="nombreTunel_m" class="form-label-sm">Nombre</label>
+                        <input type="text" class="form-control" id="nombreTunel_m" placeholder="Ingrese nombre">
+                    </div>
+                    <div class="col-md-1">
+                        <button type="submit" class="btn-sm btn-primary" style="margin-top: 25px;">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
+                <div class="row" style="padding-top:10%;">
+                    <br />
+                    <p>Resultados</p>
+                    <hr />
+                    <table class="table table-responsive-md table-hover" style="padding:10px;">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Código</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>770001</td>
+                                <td>Túnel #1</td>
+                                <td>Activo</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>770002</td>
+                                <td>Túnel $1</td>
+                                <td>Activo</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

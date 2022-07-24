@@ -1,5 +1,129 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+
 @{
+    ViewData["Title"] = "Mantenimiento de básculas";
 }
+
+<h3>@ViewData["Title"]</h3>
+
+<body>
+    <div class="card">
+        <div class="card-body" style="padding-left:25%; padding-right:25%; padding-top: 5%;">
+            <form class="row g-3">
+                <div class="col-md-6" hidden>
+                    <label for="idBascula" class="form-label">Id</label>
+                    <input type="number" class="form-control" id="idBascula">
+                </div>
+                <div class="col-md-5">
+                    <label for="codigoBascula" class="form-label">Código</label>
+                    <input type="text" class="form-control" id="codigoBascula" placeholder="Código de la báscula">
+                </div>
+                <div class="col-md-5">
+                    <label for="nombreBascula" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="nombreBascula" placeholder="Nombre de la báscula">
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                            style="margin-top: 32px;">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <label for="codigoSerie" class="form-label">Código Serie</label>
+                    <input type="text" class="form-control" id="codigoSerie" placeholder="Código Serie de la báscula">
+                </div>
+                <div class="col-md-6">
+                    <label for="direccionIp" class="form-label">Dirección Ip</label>
+                    <input type="text" class="form-control" id="direccionIp" placeholder="192.168.100.1">
+                </div>
+                <div class="col-md-2">
+                    <label for="puerto" class="form-label">Puerto</label>
+                    <input type="text" class="form-control" id="puerto" placeholder="Ej: 1008">
+                </div>
+                <div class="col-md-4">
+                    <label for="activoBascula" class="form-label">Estado</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            Activo
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                        <label class="form-check-label" for="flexRadioDefault2">
+                            Inactivo
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-6" style="padding-top: 20px;">
+                    <button type="submit" class="btn btn-outline-dark" style="margin-right: 25px;">Limpiar</button>
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+<!--Modal de búsqueda de báscula-->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Búsqueda</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3">
+                    <div class="col-md-5">
+                        <label for="nombreBascula_m" class="form-label-sm">Nombre</label>
+                        <input type="text" class="form-control" id="nombreBascula_m" placeholder="Ingrese nombre">
+                    </div>
+                    <div class="col-md-5">
+                        <label for="codigoSerie_m" class="form-label-sm">Código Serie</label>
+                        <input type="text" class="form-control" id="codigoSerie_m" placeholder="Ingrese código serie">
+                    </div>
+                    <div class="col-md-1">
+                        <button type="submit" class="btn-sm btn-primary" style="margin-top: 25px;">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
+                <div class="row" style="padding-top:10%;">
+                    <br />
+                    <p>Resultados</p>
+                    <hr />
+                    <table class="table table-responsive-md table-hover" style="padding:10px;">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Código Serie</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>660001</td>
+                                <td>Báscula #1</td>
+                                <td>Activo</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>660002</td>
+                                <td>Báscula $1</td>
+                                <td>Activo</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

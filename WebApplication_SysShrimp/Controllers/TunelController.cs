@@ -2,13 +2,18 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApplication_SysShrimp.DAO;
+using WebApplication_SysShrimp.Models;
+using WebApplication_SysShrimp.Operaciones;
 
 namespace WebApplication_SysShrimp.Controllers
 {
     public class TunelController : Controller
     {
+        private readonly ITunelOperaciones tunelOperaciones;
         // GET: TunelController1
         public ActionResult Index()
         {
@@ -16,71 +21,69 @@ namespace WebApplication_SysShrimp.Controllers
         }
 
         // GET: TunelController1/Details/5
-        public ActionResult Details(int id)
+        [HttpGet]
+        public async Task<JsonResult> Detalle(TunelRequest request)
         {
-            return View();
+            try
+            {
+                var response = await tunelOperaciones.Consultar(request);
+                if (response != null)
+                {
+                    return Json(response);
+                }
+                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante la consulta" });
+            }
+            catch (SqlException ex)
+            {
+                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error " + ex.Message.ToString() });
+            }
         }
 
         // GET: TunelController1/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: TunelController1/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<JsonResult> Create(Tunel request)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                await tunelOperaciones.CrearTunel(request);
+                return Json(new Response { ProcesoExitoso = true, MensajeRespuesta = "Proceso exitoso" });
             }
             catch
             {
-                return View();
+                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante la consulta" });
             }
         }
 
-        // GET: TunelController1/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: TunelController1/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<JsonResult> Editar(Tunel request)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                await tunelOperaciones.Editar(request);
+                return Json(new Response { ProcesoExitoso = true, MensajeRespuesta = "Proceso exitoso" });
             }
             catch
             {
-                return View();
+                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante la consulta" });
             }
         }
 
-        // GET: TunelController1/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: TunelController1/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        [HttpGet]
+        public async Task<JsonResult> Listar()
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                {
+                    var basculas = await tunelOperaciones.Listar();
+                    if (basculas != null)
+                        return Json(basculas);
+
+                    return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante la consulta" });
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error " + ex.Message.ToString() });
             }
         }
     }

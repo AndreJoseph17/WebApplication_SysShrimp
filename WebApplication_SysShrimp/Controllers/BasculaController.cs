@@ -1,10 +1,26 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Dapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Threading.Tasks;
+using WebApplication_SysShrimp.DAO;
+using WebApplication_SysShrimp.Models;
+using WebApplication_SysShrimp.Operaciones;
 
 namespace WebApplication_SysShrimp.Controllers
 {
     public class BasculaController : Controller
     {
+        private readonly IBasculaOperaciones basculaOperaciones;
+
+        public BasculaController(IBasculaOperaciones basculaOperaciones)
+        {
+            this.basculaOperaciones = basculaOperaciones;
+        }
+
         // GET: BasculaController1
         public ActionResult Index()
         {
@@ -12,71 +28,69 @@ namespace WebApplication_SysShrimp.Controllers
         }
 
         // GET: BasculaController1/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: BasculaController1/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: BasculaController1/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [HttpGet]
+        public async Task<JsonResult> Detalle(BasculaRequest request)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var response = await basculaOperaciones.Consultar(request);
+                if (response != null)
+                {
+                    return Json(response);
+                }
+                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante la consulta" });
             }
-            catch
+            catch(SqlException ex)
             {
-                return View();
+                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error "+ex.Message.ToString() });
             }
+            
         }
 
-        // GET: BasculaController1/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: BasculaController1/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: BasculaController1/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: BasculaController1/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        //POST: BasculaController1/Create
+       [HttpPost]
+        public async Task<JsonResult> Crear(Bascula request)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                await basculaOperaciones.CrearBascula(request);
+                return Json(new Response { ProcesoExitoso = true, MensajeRespuesta = "Proceso exitoso" });
+                //return Ok(new Response { ProcesoExitoso = true, MensajeRespuesta = "Proceso exitoso" }) ;
+            }
+            catch (Exception ex)
+            {
+                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante el registro "+ex.Message });
+                //return BadRequest(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante la consulta" });
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> Editar(Bascula request)
+        {
+            try
+            {
+                await basculaOperaciones.Editar(request);
+                return Json(new Response { ProcesoExitoso = true, MensajeRespuesta = "Proceso exitoso" });
             }
             catch
             {
-                return View();
+                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante la consulta" });
+            }
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> Listar()
+        {
+            try
+            {
+                    var basculas = await basculaOperaciones.Listar();
+                    if(basculas != null)
+                        return Json(basculas);
+
+                    return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante la consulta" });
+            }catch(Exception ex)
+            {
+                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error "+ex.Message.ToString() });
             }
         }
     }

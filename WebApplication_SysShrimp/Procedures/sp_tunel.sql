@@ -5,7 +5,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE pr_tunel
+CREATE PROCEDURE sp_tunel
 	@i_accion			char(1),
 	@i_usuario			varchar(20)	= null,
 
@@ -84,13 +84,6 @@ BEGIN
 			,activo = @i_activo
 		where id_tunel = @i_id_tunel
 
-		if @@rowcount = 0 or @@error != 0
-		begin
-			set	@t_mensaje_error = 'Error al insertar los registros del parametro' 
-			exec sp_imprimir_error
-				@i_mensaje_error = @t_mensaje_error
-			return 1
-		end
 	end
 	
 	if @i_accion = 'G'
@@ -108,12 +101,30 @@ BEGIN
       ,[direccion_ip_salida]
       ,[puerto_salida]
       ,[activo]
-	FROM [SysShrimp].[dbo].[tb_tunel]
-	where activo = 1
-	  
+	FROM [SysShrimp].[dbo].[tb_tunel]	  
 	  return 0
 	end
 
+	if @i_accion = 'C'
+	begin
+		SELECT [id_tunel]
+			  ,[codigo]
+			  ,[nombre]
+			  ,[cantidad_min_peso]
+			  ,[cantidad_max_peso]
+			  ,[peso_actual]
+			  ,[temperatura_actual]
+			  ,[alarma_peso]
+			  ,[direccion_ip_entrada]
+			  ,[puerto_entrada]
+			  ,[direccion_ip_salida]
+			  ,[puerto_salida]
+			  ,[activo]
+		FROM [SysShrimp].[dbo].[tb_tunel]
+	  WHERE codigo = isnull(@i_codigo,codigo)
+	  AND nombre = ISNULL(@i_nombre, nombre)
+
+	  return 1
+	end
 	return 1
 END
-GO

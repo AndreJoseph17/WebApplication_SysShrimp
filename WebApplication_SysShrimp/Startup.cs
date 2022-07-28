@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApplication_SysShrimp.Operaciones;
 
 namespace WebApplication_SysShrimp
 {
@@ -26,6 +27,8 @@ namespace WebApplication_SysShrimp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddTransient<IBasculaOperaciones, BasculaOperaciones>();
+            services.AddTransient<ITunelOperaciones, TunelOperaciones>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

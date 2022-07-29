@@ -14,7 +14,7 @@ namespace WebApplication_SysShrimp.Operaciones
 {
     public interface IBasculaOperaciones
     {
-        Task<Bascula> Consultar(BasculaRequest request);
+        Task<IEnumerable<Bascula>> Consultar(BasculaRequest request);
         Task CrearBascula(Bascula request);
         Task<IEnumerable<Bascula>> Listar();
         Task Editar(Bascula request);
@@ -51,17 +51,17 @@ namespace WebApplication_SysShrimp.Operaciones
             }
         }
 
-        public async Task<Bascula> Consultar(BasculaRequest request)
+        public async Task<IEnumerable<Bascula>> Consultar(BasculaRequest request)
         {
             try
             {
                 using var connection = new SqlConnection(connectionString);
                 {
-                    var results = await connection.QueryFirstOrDefaultAsync<Bascula>
+                    var results = await connection.QueryAsync<Bascula>
                         (store_procedure, new
                         {
                             i_accion = "C",
-                            i_codigo_serie = request.Codigo,
+                            i_codigo = request.Codigo,
                             i_nombre = request.Nombre
                         }, commandType: CommandType.StoredProcedure);
                     return results;

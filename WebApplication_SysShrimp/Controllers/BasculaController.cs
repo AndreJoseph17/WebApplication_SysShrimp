@@ -83,11 +83,11 @@ namespace WebApplication_SysShrimp.Controllers
         {
             try
             {
-                    var basculas = await basculaOperaciones.Listar();
-                    if(basculas != null)
-                        return Json(basculas);
+                var basculas = await basculaOperaciones.Listar();
+                if(basculas != null)
+                    return Json(basculas);
 
-                    return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante la consulta" });
+                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante la consulta" });
             }catch(Exception ex)
             {
                 return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error "+ex.Message.ToString() });

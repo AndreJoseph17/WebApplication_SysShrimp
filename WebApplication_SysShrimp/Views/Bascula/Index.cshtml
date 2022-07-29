@@ -23,21 +23,21 @@
                 </div>
                 <div class="col-md-5">
                     <label for="codigoBascula" class="form-label">Código</label>
-                    <input type="text" class="form-control" id="codigoBascula" placeholder="Código de la báscula">
+                    <input type="text" class="form-control" id="codigoBascula" placeholder="Ingrese código">
                 </div>
                 <div class="col-md-5">
                     <label for="nombreBascula" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" id="nombreBascula" placeholder="Nombre de la báscula">
+                    <input type="text" class="form-control" id="nombreBascula" placeholder="Ingrese nombre de báscula">
                 </div>
                 <div class="col-md-2">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                            style="margin-top: 32px;">
+                            style="margin-top: 32px;" onclick="setearValores()">
                         <i class="bi bi-search"></i>
                     </button>
                 </div>
                 <div class="col-md-6">
                     <label for="codigoSerie" class="form-label">Código Serie</label>
-                    <input type="text" class="form-control" id="codigoSerie" placeholder="Código Serie de la báscula">
+                    <input type="text" class="form-control" id="codigoSerie" placeholder="Ingrese código serie">
                 </div>
                 <div class="col-md-6">
                     <label for="direccionIp" class="form-label">Dirección Ip</label>
@@ -64,7 +64,7 @@
                 </div>
                 <div class="col-md-6" style="padding-top: 20px;">
                     <button type="submit" class="btn btn-outline-dark" style="margin-right: 25px;">Limpiar</button>
-                    <button type="button" class="btn btn-success" onclick="GuardarBascula();">
+                    <button type="button" class="btn btn-success" onclick="GuardarBascula()">
                         Guardar
                     </button>
                 </div>
@@ -75,7 +75,7 @@
 
 <!--Modal de búsqueda de báscula-->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Búsqueda</h5>
@@ -83,16 +83,18 @@
             </div>
             <div class="modal-body">
                 <form class="row g-3">
+                    <div class="col-md-4">
+                        <label for="codigoSerie_m" class="form-label-sm">Código</label>
+                        <input type="text" class="form-control" id="codigoBascula_m" placeholder="Ingrese código">
+                    </div>
+
                     <div class="col-md-5">
                         <label for="nombreBascula_m" class="form-label-sm">Nombre</label>
                         <input type="text" class="form-control" id="nombreBascula_m" placeholder="Ingrese nombre">
                     </div>
-                    <div class="col-md-5">
-                        <label for="codigoSerie_m" class="form-label-sm">Código Serie</label>
-                        <input type="text" class="form-control" id="codigoSerie_m" placeholder="Ingrese código serie">
-                    </div>
+
                     <div class="col-md-1">
-                        <button type="submit" class="btn-sm btn-primary" style="margin-top: 25px;">
+                        <button type="button" class="btn-sm btn-primary" style="margin-top: 25px;" onclick="BuscarBascula()">
                             <i class="bi bi-search"></i>
                         </button>
                     </div>
@@ -101,34 +103,28 @@
                     <br />
                     <p>Resultados</p>
                     <hr />
-                    <table class="table table-responsive-md table-hover" style="padding:10px;">
+                    <div id="liveAlertPlaceholder"></div>
+                    <table id="gridBasculas" class="table table-hover" style="padding:10px;">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
+                                <th scope="col">Id</th>
                                 <th scope="col">Código Serie</th>
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Estado</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>660001</td>
-                                <td>Báscula #1</td>
-                                <td>Activo</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>660002</td>
-                                <td>Báscula $1</td>
-                                <td>Activo</td>
-                            </tr>
+                        <tbody id="bodyTabla">
                         </tbody>
+
                     </table>
+
                 </div>
 
             </div>
             <div class="modal-footer">
+                @*<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="cargarBasculaFormulario()">Editar</button>*@
+                <button type="button" class="btn btn-outline-dark" onclick="limpiarModal()">Limpiar</button>
+                <button type="button" class="btn btn-primary" onclick="validarFilaResultados()">Editar</button>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>

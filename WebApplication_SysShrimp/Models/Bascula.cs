@@ -19,5 +19,7 @@ namespace WebApplication_SysShrimp.Models
         public int Puerto { get; set; }
         [JsonProperty("estado")]
         public int Estado { get; set; }
+        [JsonProperty("activo")]
+        public int Activo { get; set; }
     }
 }

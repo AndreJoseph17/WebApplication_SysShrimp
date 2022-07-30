@@ -1,5 +1,4 @@
 ﻿
-
 var DatosJson;
 
 function doFunction() {
@@ -30,7 +29,7 @@ function setearValores() {
 /************************************************************************************* */
 //Método para buscar básculas
 
-function BuscarBascula() {
+function BuscarTunel() {
     let nombre = document.getElementById("nombreBascula_m").value;
     let codigo = document.getElementById("codigoBascula_m").value;
 
@@ -73,18 +72,20 @@ function cargarDatos(consulta) {
     DatosJson = JSON.parse(JSON.stringify(consulta));
     for (i = 0; i < DatosJson.length; i++) {
 
-        let estado;
+        let estado, color;
         if (DatosJson[i].activo) {
             estado = "Activo";
+            color = "#89F77C";
         } else {
             estado = "Inactivo";
+            color = '#F08080';
         }
 
         $("#bodyTabla").append('<tr>' +
             '<td align="left" style="dislay: none;">' + DatosJson[i].id_Bascula + '</td>' +
             '<td align="left" style="dislay: none;">' + DatosJson[i].codigo_Serie + '</td>' +
             '<td align="left" style="dislay: none;">' + DatosJson[i].nombre + '</td>' +
-            '<td align="left" style="dislay: none;">' + estado + '</td>' + '</tr>');
+            '<td align="left" style="dislay: none; background-color: ' + color +'; ">' + estado + '</td>' + '</tr>');
     }
 }
 /*************************************************************************************/
@@ -93,10 +94,10 @@ function validarFilaResultados() {
     if (DatosJson.length > 1) {
         alert('Filtrar la búsqueda a un solo resultado para poder editar');
     } else {
-        cargarBasculaFormulario();
+        cargarTunelFormulario();
     }
 }
-function cargarBasculaFormulario() {
+function cargarTunelFormulario() {
 
     $("#staticBackdrop").modal('hide');
     

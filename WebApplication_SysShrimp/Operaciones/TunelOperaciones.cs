@@ -13,7 +13,7 @@ namespace WebApplication_SysShrimp.Operaciones
 {
     public interface ITunelOperaciones
     {
-        Task<Tunel> Consultar(TunelRequest request);
+        Task<IEnumerable<Tunel>> Consultar(TunelRequest request);
         Task CrearTunel(Tunel request);
         Task<IEnumerable<Tunel>> Listar();
         Task Editar(Tunel request);
@@ -30,13 +30,13 @@ namespace WebApplication_SysShrimp.Operaciones
 
             store_procedure = Db_Procedures.SpTunel;
         }
-        public async Task<Tunel> Consultar(TunelRequest request)
+        public async Task<IEnumerable<Tunel>> Consultar(TunelRequest request)
         {
             try
             {
                 using var connection = new SqlConnection(connectionString);
                 {
-                    var results = await connection.QueryFirstOrDefaultAsync<Tunel>
+                    var results = await connection.QueryAsync<Tunel>
                         (store_procedure, new
                         {
                             i_accion = "C",

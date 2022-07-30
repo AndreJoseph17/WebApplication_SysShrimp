@@ -19,7 +19,7 @@ namespace WebApplication_SysShrimp.Models
         [JsonProperty("temperatura_actual")]
         public decimal Temperatura_Actual { get; set; }
         [JsonProperty("alarma_peso")]
-        public bool Alarma_Peso { get; set; }
+        public int Alarma_Peso { get; set; }
         [JsonProperty("direccion_ip_entrada")]
         public string Direccion_Ip_Entrada { get; set; }   
         [JsonProperty("puerto_entrada")]
@@ -29,7 +29,7 @@ namespace WebApplication_SysShrimp.Models
         [JsonProperty("puerto_salida")]
         public int Puerto_Salida { get; set; }
         [JsonProperty("activo")]
-        public bool Activo { get; set; }    
+        public int Activo { get; set; }    
 
     }
 }

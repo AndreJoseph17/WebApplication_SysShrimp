@@ -14,6 +14,12 @@ namespace WebApplication_SysShrimp.Controllers
     public class TunelController : Controller
     {
         private readonly ITunelOperaciones tunelOperaciones;
+
+        public TunelController(ITunelOperaciones tunelOperaciones)
+        {
+            this.tunelOperaciones = tunelOperaciones;
+        }
+
         // GET: TunelController1
         public ActionResult Index()
         {
@@ -33,24 +39,25 @@ namespace WebApplication_SysShrimp.Controllers
                 }
                 return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante la consulta" });
             }
-            catch (SqlException ex)
+            catch (Exception ex)
             {
                 return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error " + ex.Message.ToString() });
             }
+            
         }
 
         // GET: TunelController1/Create
         [HttpPost]
-        public async Task<JsonResult> Create(Tunel request)
+        public async Task<JsonResult> Crear(Tunel request)
         {
             try
             {
                 await tunelOperaciones.CrearTunel(request);
                 return Json(new Response { ProcesoExitoso = true, MensajeRespuesta = "Proceso exitoso" });
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante la consulta" });
+                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante el registro"+ex.Message });
             }
         }
 
@@ -62,9 +69,9 @@ namespace WebApplication_SysShrimp.Controllers
                 await tunelOperaciones.Editar(request);
                 return Json(new Response { ProcesoExitoso = true, MensajeRespuesta = "Proceso exitoso" });
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante la consulta" });
+                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante la edición"+ex.Message });
             }
         }
 
@@ -73,13 +80,11 @@ namespace WebApplication_SysShrimp.Controllers
         {
             try
             {
-                {
-                    var basculas = await tunelOperaciones.Listar();
-                    if (basculas != null)
-                        return Json(basculas);
+                var basculas = await tunelOperaciones.Listar();
+                if (basculas != null)
+                    return Json(basculas);
 
-                    return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante la consulta" });
-                }
+                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante la consulta" });
             }
             catch (Exception ex)
             {

@@ -83,7 +83,7 @@ BEGIN
 			,puerto_salida = @i_puerto_salida
 			,activo = @i_activo
 		where id_tunel = @i_id_tunel
-
+		return 1
 	end
 	
 	if @i_accion = 'G'

@@ -4,6 +4,10 @@
 @{
     ViewData["Title"] = "Mantenimiento de túnel";
 }
+
+<script src="~/js/Tunel/Tunel.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
 <div style="margin: 20px;">
     <h3>@ViewData["Title"]</h3>
 </div>
@@ -26,8 +30,8 @@
                     <input type="text" class="form-control" id="nombreTunel" placeholder="Nombre del túnel">
                 </div>
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-primary" style="margin-top: 32px;"
-                            data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
+                    <button type="button" class="btn btn-primary" style="margin-top: 32px;" data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop2" onclick="setearValoresModalTunel()">
                         <i class="bi bi-search"></i>
                     </button>
                 </div>
@@ -52,14 +56,7 @@
                         <span class="input-group-text" id="basic-addon2">.gr</span>
                     </div>
                 </div>
-                <div class="col-md-4 ">
-                    <label for="temperatura" class="form-label">Temperatura Actual</label>
-                    <div class="input-group mb-3">
-                        <input type="number" class="form-control" id="temperatura" placeholder="Ej: 60">
-                        <span class="input-group-text" id="basic-addon2">° C</span>
-                    </div>
-                </div>
-                <div class="col-md-5" style="margin-left: 20px;">
+                <div class="col-md-4" style="margin-left: 20px;">
                     <label for="activoAlarma" class="form-label">Alarma</label>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="flexRadioDefault" id="alarmaActiva">
@@ -74,6 +71,14 @@
                         </label>
                     </div>
                 </div>
+                <div class="col-md-3">
+                    <label for="temperatura" class="form-label">Temperatura Actual</label>
+                    <div class="input-group mb-3">
+                        <input type="number" class="form-control" id="temperatura" placeholder="Ej: 60">
+                        <span class="input-group-text" id="basic-addon2">° C</span>
+                    </div>
+                </div>
+
                 <div class="col-md-4">
                     <label for="ipEntrada" class="form-label">Dirección Ip Entrada</label>
                     <input type="text" class="form-control" id="ipEntrada" placeholder="Ej: 192.168.100.1">
@@ -88,7 +93,7 @@
                 </div>
                 <div class="col-md-2">
                     <label for="puertoSalida" class="form-label">Puerto Salida</label>
-                    <input type="text" class="form-control" id="ipEntrada" placeholder="Ej: 8001">
+                    <input type="text" class="form-control" id="puertoSalida" placeholder="Ej: 8001">
                 </div>
                 <div class="col-md-4">
                     <label for="estadoTunel" class="form-label">Estado</label>
@@ -107,7 +112,7 @@
                 </div>
                 <div class="col-md-6" style="padding-top: 40px;">
                     <button type="submit" class="btn btn-outline-dark" style="margin-right: 25px;">Limpiar</button>
-                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <button type="button" class="btn btn-success" onclick="GuardarTunel()">Guardar</button>
                 </div>
             </form>
         </div>
@@ -116,7 +121,7 @@
 
 <!--Modal de búsqueda de Túnel-->
 <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Búsqueda</h5>
@@ -124,12 +129,16 @@
             </div>
             <div class="modal-body">
                 <form class="row g-3">
-                    <div class="col-md-8">
+                    <div class="col-md-5">
+                        <label for="codigoTunel_m" class="form-label-sm">Código</label>
+                        <input type="text" class="form-control" id="codigoTunel_m" placeholder="Ingrese código">
+                    </div>
+                    <div class="col-md-5">
                         <label for="nombreTunel_m" class="form-label-sm">Nombre</label>
                         <input type="text" class="form-control" id="nombreTunel_m" placeholder="Ingrese nombre">
                     </div>
                     <div class="col-md-1">
-                        <button type="submit" class="btn-sm btn-primary" style="margin-top: 25px;">
+                        <button type="button" class="btn-sm btn-primary" style="margin-top: 25px;" onclick="BuscarTunel()">
                             <i class="bi bi-search"></i>
                         </button>
                     </div>
@@ -138,34 +147,24 @@
                     <br />
                     <p>Resultados</p>
                     <hr />
-                    <table class="table table-responsive-md table-hover" style="padding:10px;">
+                    <table id="gridTunel" class="table table-hover" style="padding:10px;">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
+                                <th scope="col">Id</th>
                                 <th scope="col">Código</th>
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Estado</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>770001</td>
-                                <td>Túnel #1</td>
-                                <td>Activo</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>770002</td>
-                                <td>Túnel $1</td>
-                                <td>Activo</td>
-                            </tr>
+                        <tbody id="bodyTablaTunel">
                         </tbody>
                     </table>
                 </div>
 
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" onclick="limpiarModalTunel()">Limpiar</button>
+                <button type="button" class="btn btn-primary" onclick="validarFilaResultadosTunel()">Editar</button>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>

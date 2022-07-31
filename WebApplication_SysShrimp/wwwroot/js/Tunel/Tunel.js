@@ -182,14 +182,16 @@ function GuardarTunel() {
             alarma_Peso = 0;
         }
 
-        if (cantidad_min_peso > cantidad_max_peso) {
+        if (Number(cantidad_min_peso) > Number(cantidad_max_peso)) {
             alert("Peso máximo no puede ser mayor al mínimo");
             return;
         }
 
-        if (peso_actual < cantidad_min_peso || peso_actual > cantidad_max_peso) {
+        if (Number(peso_actual) > Number(cantidad_max_peso) || Number(peso_actual) < Number(cantidad_min_peso) ) {
+            
             alert("Peso actual no está en el rango registrado");
             return;
+                
         }
 
         datosEnviar.codigo = codigo;
@@ -236,7 +238,7 @@ function GuardarTunel() {
                         alert("Túnel ingresado correctamente");
                         limpiarPantallaTunel();
                     } else {
-                        alert("Error al ingresar registro " + response.mensajeRespuesta);
+                        alert("Error al ingresar registro, revise los campos por favor ");
                         return;
                     }
                 },

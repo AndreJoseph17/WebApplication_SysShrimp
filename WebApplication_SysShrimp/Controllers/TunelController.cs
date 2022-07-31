@@ -41,7 +41,7 @@ namespace WebApplication_SysShrimp.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error " + ex.Message.ToString() });
+                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error al realizar la consulta "});
             }
             
         }
@@ -57,7 +57,7 @@ namespace WebApplication_SysShrimp.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante el registro"+ex.Message });
+                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante el registro" });
             }
         }
 
@@ -71,7 +71,7 @@ namespace WebApplication_SysShrimp.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante la edición"+ex.Message });
+                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante la edición"});
             }
         }
 
@@ -88,7 +88,7 @@ namespace WebApplication_SysShrimp.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error " + ex.Message.ToString() });
+                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error "});
             }
         }
     }

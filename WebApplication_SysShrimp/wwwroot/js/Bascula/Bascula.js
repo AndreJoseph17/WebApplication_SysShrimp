@@ -29,14 +29,14 @@ function setearValores() {
 /************************************************************************************* */
 //Método para buscar básculas
 
-function BuscarTunel() {
+function BuscarBascula() {
     let nombre = document.getElementById("nombreBascula_m").value;
     let codigo = document.getElementById("codigoBascula_m").value;
 
     //Setear la variable json a null para realizar nueva búsqueda y limpiar tabla de resultados
     DatosJson = null;
 
-    if (nombre != '' || codigoSerie != '') {
+    if (nombre.length > 0 || codigo.length > 0) {
         try {
             $.ajax({
                 type: 'GET',
@@ -180,7 +180,7 @@ function GuardarBascula() {
                         alert("Báscula ingresada correctamente");
                         limpiar();
                     } else {
-                        alert("Error al ingresar registro " + response.mensajeRespuesta);
+                        alert("Error al ingresar registro ");
                         return;
                     }
                 },

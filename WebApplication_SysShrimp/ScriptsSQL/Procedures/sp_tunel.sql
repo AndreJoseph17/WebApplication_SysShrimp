@@ -122,7 +122,7 @@ BEGIN
 			  ,[activo]
 		FROM [SysShrimp].[dbo].[tb_tunel]
 	  WHERE codigo = isnull(@i_codigo,codigo)
-	  AND nombre = ISNULL(@i_nombre, nombre)
+	  AND nombre Like  '%'+ISNULL(@i_nombre, nombre)+'%'
 
 	  return 1
 	end

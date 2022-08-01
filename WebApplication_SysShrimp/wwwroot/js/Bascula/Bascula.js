@@ -29,9 +29,10 @@ function setearValores() {
 /************************************************************************************* */
 //Método para buscar básculas
 
-function BuscarBascula() {
-    let nombre = document.getElementById("nombreBascula_m").value;
-    let codigo = document.getElementById("codigoBascula_m").value;
+function BuscarBascula(nombre_bascula, codigo_bascula) {
+    nombre = document.getElementById("nombreBascula_m").value;
+    codigo = document.getElementById("codigoBascula_m").value;
+
 
     //Setear la variable json a null para realizar nueva búsqueda y limpiar tabla de resultados
     DatosJson = null;
@@ -73,6 +74,7 @@ function cargarDatos(consulta) {
     for (i = 0; i < DatosJson.length; i++) {
 
         let estado, color;
+        let codigo_bascula = DatosJson[i].codigo;
         if (DatosJson[i].activo) {
             estado = "Activo";
             color = "#89F77C";
@@ -81,11 +83,13 @@ function cargarDatos(consulta) {
             color = '#F08080';
         }
 
-        $("#bodyTabla").append('<tr>' +
-            '<td align="left" style="dislay: none;">' + DatosJson[i].id_Bascula + '</td>' +
+        $("#bodyTabla").append('<tr id = ' + codigo_bascula + '>' +
+            '<td align="left" style="dislay: none;">' + DatosJson[i].codigo + '</td>' +
             '<td align="left" style="dislay: none;">' + DatosJson[i].codigo_Serie + '</td>' +
             '<td align="left" style="dislay: none;">' + DatosJson[i].nombre + '</td>' +
-            '<td align="left" style="dislay: none; background-color: ' + color +'; ">' + estado + '</td>' + '</tr>');
+            '<td align="left" style="dislay: none; background-color: ' + color + '; ">' + estado + '</td>' +
+            '<td align="left" style="dislay: none;"> <a href="#" class = "btn btn-primary" onclick ="Editar_Bascula(' + codigo_bascula +')";>Editar</a></td>' +
+            '</tr>');
     }
 }
 /*************************************************************************************/
@@ -94,10 +98,62 @@ function validarFilaResultados() {
     if (DatosJson.length > 1) {
         alert('Filtrar la búsqueda a un solo resultado para poder editar');
     } else {
-        cargarTunelFormulario();
+        cargarBasculaFormulario();
     }
 }
-function cargarTunelFormulario() {
+
+function Editar_Bascula(cod) {
+    alert("Se eligió el id " + cod);
+    try {
+        $.ajax({
+            type: 'GET',
+            url: 'Bascula/Detalle',
+            data: {
+                codigo: cod,
+                nombre: null,
+            },
+            success: function (response) {
+                if (response != null) {
+                    limpiarTabla();
+                    cargarFormulario(response);
+                } else {
+                    alert("No hay registros actualmente");
+                    return;
+                }
+            },
+            error: function () {
+                alert("Error al generar consulta");
+            }
+
+        });
+    } catch (e) {
+        alert("Error al guardar");
+    }
+}
+
+function cargarFormulario(response) {
+
+    $("#staticBackdrop").modal('hide');
+
+    $("#codigoBascula").val(response[0].codigo);
+    document.getElementById("codigoBascula").disabled = true;
+
+    $("#idBascula").val(response[0].id_Bascula);
+    $("#nombreBascula").val(response[0].nombre);
+    $("#codigoSerie").val(response[0].codigo_Serie);
+    $("#direccionIp").val(response[0].direccion_Ip);
+    $("#puerto").val(response[0].puerto);
+    if (response[0].activo) {
+        document.querySelector('#EstadoActivo').checked = true;
+        document.querySelector('#EstadoInactivo').checked = false;
+    } else {
+        document.querySelector('#EstadoActivo').checked = false;
+        document.querySelector('#EstadoInactivo').checked = true;
+    }
+}
+
+
+function cargarBasculaFormulario() {
 
     $("#staticBackdrop").modal('hide');
     

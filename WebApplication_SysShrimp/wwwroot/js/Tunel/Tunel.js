@@ -68,6 +68,7 @@ function cargarDatosTunel(consulta) {
     for (i = 0; i < DatosJsonTunel.length; i++) {
 
         let estado, color;
+        let codigo_Tunel = DatosJsonTunel[i].codigo;
         if (DatosJsonTunel[i].activo) {
             estado = "Activo";
             color = "#89F77C";
@@ -76,11 +77,12 @@ function cargarDatosTunel(consulta) {
             color = '#F08080';
         }
 
-        $("#bodyTablaTunel").append('<tr>' +
-            '<td align="left" style="dislay: none;">' + DatosJsonTunel[i].id_Tunel + '</td>' +
+        $("#bodyTablaTunel").append('<tr id = ' + codigo_Tunel + '>' +
             '<td align="left" style="dislay: none;">' + DatosJsonTunel[i].codigo + '</td>' +
             '<td align="left" style="dislay: none;">' + DatosJsonTunel[i].nombre + '</td>' +
-            '<td align="left" style="dislay: none; background-color: ' + color + '; ">' + estado + '</td>' + '</tr>');
+            '<td align="left" style="dislay: none; background-color: ' + color + '; ">' + estado + '</td>' +
+            '<td align="left" style="dislay: none;"> <a href="#" class = "btn btn-primary" onclick ="Editar_Tunel(' + codigo_Tunel + ')";>Editar</a></td>' +
+            '</tr>');
     }
 }
 
@@ -93,25 +95,54 @@ function validarFilaResultadosTunel() {
         cargarTunelFormulario();
     }
 }
-function cargarTunelFormulario() {
+
+function Editar_Tunel(cod) {
+    alert("Se eligió el id " + cod);
+    try {
+        $.ajax({
+            type: 'GET',
+            url: 'Tunel/Detalle',
+            data: {
+                codigo: cod,
+                nombre: null,
+            },
+            success: function (response) {
+                if (response != null) {
+                    limpiarTablaTunel();
+                    cargarTunelFormulario(response);
+                } else {
+                    alert("No hay registros actualmente");
+                    return;
+                }
+            },
+            error: function () {
+                alert("Error al generar consulta");
+            }
+
+        });
+    } catch (e) {
+        alert("Error al guardar");
+    }
+}
+function cargarTunelFormulario(response) {
 
     $("#staticBackdrop2").modal('hide');
 
-    $("#codigoTunel").val(DatosJsonTunel[0].codigo);
+    $("#codigoTunel").val(response[0].codigo);
     document.getElementById("codigoTunel").disabled = true;
 
-    $("#idTunel").val(DatosJsonTunel[0].id_Tunel);
-    $("#nombreTunel").val(DatosJsonTunel[0].nombre);
-    $("#pesoActual").val(DatosJsonTunel[0].peso_Actual);
-    $("#pesoMinimo").val(DatosJsonTunel[0].cantidad_Min_Peso);
-    $("#pesoMaximo").val(DatosJsonTunel[0].cantidad_Max_Peso);
-    $("#temperatura").val(DatosJsonTunel[0].temperatura_Actual);
-    $("#ipEntrada").val(DatosJsonTunel[0].direccion_Ip_Entrada);
-    $("#puertoEntrada").val(DatosJsonTunel[0].puerto_Entrada);
-    $("#ipSalida").val(DatosJsonTunel[0].direccion_Ip_Salida);
-    $("#puertoSalida").val(DatosJsonTunel[0].puerto_Salida);
+    $("#idTunel").val(response[0].id_Tunel);
+    $("#nombreTunel").val(response[0].nombre);
+    $("#pesoActual").val(response[0].peso_Actual);
+    $("#pesoMinimo").val(response[0].cantidad_Min_Peso);
+    $("#pesoMaximo").val(response[0].cantidad_Max_Peso);
+    $("#temperatura").val(response[0].temperatura_Actual);
+    $("#ipEntrada").val(response[0].direccion_Ip_Entrada);
+    $("#puertoEntrada").val(response[0].puerto_Entrada);
+    $("#ipSalida").val(response[0].direccion_Ip_Salida);
+    $("#puertoSalida").val(response[0].puerto_Salida);
 
-    if (DatosJsonTunel[0].activo) {
+    if (response[0].activo) {
         document.querySelector('#activoTunel').checked = true;
         document.querySelector('#inactivoTunel').checked = false;
     } else {
@@ -119,7 +150,7 @@ function cargarTunelFormulario() {
         document.querySelector('#inactivoTunel').checked = true;
     }
 
-    if (DatosJsonTunel[0].alarma_Peso) {
+    if (response[0].alarma_Peso) {
         document.querySelector('#alarmaActiva').checked = true;
         document.querySelector('#alarmaDesactiva').checked = false;
     } else {
@@ -205,7 +236,7 @@ function GuardarTunel() {
         datosEnviar.puerto_entrada = puerto_entrada;
         datosEnviar.direccion_ip_salida = direccion_ip_salida;
         datosEnviar.puerto_salida = puerto_salida;
-        datosEnviar.estado = estado;
+        datosEnviar.activo = estado;
 
         if (id_tunel > 0) {
             datosEnviar.id_tunel = id_tunel;
@@ -231,7 +262,7 @@ function GuardarTunel() {
                     puerto_entrada: datosEnviar.puerto_entrada,
                     direccion_ip_salida: datosEnviar.direccion_ip_salida,
                     puerto_salida: datosEnviar.puerto_salida,
-                    activo: datosEnviar.estado
+                    activo: datosEnviar.activo
                 },
                 success: function (response) {
                     if (response.procesoExitoso === true) {

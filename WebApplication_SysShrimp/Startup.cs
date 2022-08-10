@@ -29,6 +29,7 @@ namespace WebApplication_SysShrimp
             services.AddControllersWithViews();
             services.AddTransient<IBasculaOperaciones, BasculaOperaciones>();
             services.AddTransient<ITunelOperaciones, TunelOperaciones>();
+            services.AddTransient<IReporteBasculaTunelOperaciones, ReporteBasculaTunelOperaciones>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -12,6 +12,7 @@ namespace WebApplication_SysShrimp.DAO
          */
         public const string SpBascula = "sp_bascula";
         public const string SpTunel = "sp_tunel";
+        public const string SpReportBasculaTunel = "sp_reporte_bascula_tunel";
 
     }
 }

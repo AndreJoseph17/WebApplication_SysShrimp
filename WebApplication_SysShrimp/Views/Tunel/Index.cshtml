@@ -5,8 +5,9 @@
     ViewData["Title"] = "Mantenimiento de túnel";
 }
 
-<script src="~/js/Tunel/Tunel.js"></script>
+
 <script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/Tunel/Tunel.js"></script>
 
 <div style="margin: 20px;">
     <h3>@ViewData["Title"]</h3>
@@ -19,7 +20,7 @@
             <form class="row g-3">
                 <div class="col-md-6" hidden>
                     <label for="idTunel" class="form-label">Id</label>
-                    <input type="number" class="form-control" id="idTunel">
+                    <input type="number" class="form-control" id="idTunel" min="1" max="1000000">
                 </div>
                 <div class="col-md-5">
                     <label for="codigoTunel" class="form-label">Código</label>
@@ -38,21 +39,21 @@
                 <div class="col-md-3">
                     <label for="pesoActual" class="form-label">Peso Actual</label>
                     <div class=" input-group mb-3">
-                        <input type="number" class="form-control" id="pesoActual" placeholder="Peso actual">
+                        <input type="number" class="form-control" id="pesoActual" placeholder="Peso actual" min="1" max="100000">
                         <span class="input-group-text" id="basic-addon2">.gr</span>
                     </div>
                 </div>
                 <div class="col-md-3 ">
                     <label for="pesoMinimo" class="form-label">Peso Mínimo</label>
                     <div class="input-group mb-3">
-                        <input type="number" class="form-control" id="pesoMinimo" placeholder="Peso mínimo">
+                        <input type="number" class="form-control" id="pesoMinimo" placeholder="Peso mínimo" min="1" max="100000">
                         <span class="input-group-text" id="basic-addon2">.gr</span>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <label for="pesoMaximo" class="form-label">Peso Máximo</label>
                     <div class=" input-group mb-3">
-                        <input type="number" class="form-control" id="pesoMaximo" placeholder="Peso máximo">
+                        <input type="number" class="form-control" id="pesoMaximo" placeholder="Peso máximo" min="1" max="100000">
                         <span class="input-group-text" id="basic-addon2">.gr</span>
                     </div>
                 </div>
@@ -85,7 +86,7 @@
                 </div>
                 <div class="col-md-2">
                     <label for="puertoEntrada" class="form-label">Puerto Entrada</label>
-                    <input type="text" class="form-control" id="puertoEntrada" placeholder="Ej: 8001">
+                    <input type="number" class="form-control" id="puertoEntrada" placeholder="Ej: 8001" min="1" max="100000">
                 </div>
                 <div class="col-md-4">
                     <label for="ipSalida" class="form-label">Dirección Ip Salida</label>
@@ -93,7 +94,7 @@
                 </div>
                 <div class="col-md-2">
                     <label for="puertoSalida" class="form-label">Puerto Salida</label>
-                    <input type="text" class="form-control" id="puertoSalida" placeholder="Ej: 8001">
+                    <input type="number" class="form-control" id="puertoSalida" placeholder="Ej: 8001" min="1" max="100000">
                 </div>
                 <div class="col-md-4">
                     <label for="estadoTunel" class="form-label">Estado</label>

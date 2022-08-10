@@ -5,7 +5,11 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-alter PROCEDURE sp_bitacora_bascula
+IF OBJECT_ID('sp_bitacora_bascula', 'P') IS NOT NULL  
+  DROP PROCEDURE sp_bitacora_bascula
+  go
+
+CREATE PROCEDURE sp_bitacora_bascula
 	@i_accion			char(1),
 	@i_usuario			varchar(20)		= null,
 

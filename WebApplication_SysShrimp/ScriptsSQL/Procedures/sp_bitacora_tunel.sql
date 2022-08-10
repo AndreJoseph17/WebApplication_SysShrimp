@@ -5,6 +5,10 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+IF OBJECT_ID('pr_bitacora_tunel', 'P') IS NOT NULL  
+  DROP PROCEDURE pr_bitacora_tunel
+  go
+
 CREATE PROCEDURE pr_bitacora_tunel
 	@i_accion			char(1),
 	@i_usuario			varchar(20)		= null,

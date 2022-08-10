@@ -59,6 +59,9 @@ namespace WebApplication_SysShrimp.Controllers
             }
             catch (Exception ex)
             {
+                if(ex.Message.Contains("duplicate key"))
+                    return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error, código ya existente!" });
+
                 return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante el registro "});
                 //return BadRequest(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante la consulta" });
             }

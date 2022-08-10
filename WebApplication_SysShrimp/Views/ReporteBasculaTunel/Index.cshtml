@@ -1,0 +1,210 @@
+﻿@model IEnumerable<WebApplication_SysShrimp.Models.Tunel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<head>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <link href="~/css/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+    <script src="~/js/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/lib/ultimate-export/tableExport.js"></script>
+    <script src="~/js/ReporteBasculaTunel/ReporteBasculaTuneljs.js"></script>
+</head>
+<h3>Reporte </h3>
+
+<body>
+    <div class="card">
+        <div class="card-body" style="padding-left:10%; padding-right:10%; padding-top: 3%;">
+            <form class="row g-3">
+                <div class="col-md-6" hidden>
+                    <label for="idBasculaReporte" class="form-label">Id</label>
+                    <input type="number" class="form-control" id="idBasculaReporte">
+                </div>
+                <div class="col-md-4">
+                    <label for="nombreBasculaReporte" class="form-label">Búsqueda de báscula</label>
+                    <input type="text" class="form-control" id="nombreBasculaReporte" placeholder="Báscula" disabled>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#staticBackdropBasculaReporte"
+                            style="margin-top: 32px;" onclick="setearValoresBascula()">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+                <div class="col-md-6" hidden>
+                    <label for="idTunelReporte" class="form-label">Id</label>
+                    <input type="number" class="form-control" id="idTunelReporte" min="1" max="1000000">
+                </div>
+                <div class="col-md-4">
+                    <label for="nombreTunelReporte" class="form-label">Búsqueda de Túnel</label>
+                    <input type="text" class="form-control" id="nombreTunelReporte" placeholder="Túnel" disabled>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#staticBackdropTunelReporte"
+                            style="margin-top: 32px;" onclick="setearValoresModalTunel()">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+                <div class="col-md-3">
+                    <label for="fechaInicioReporte" class="form-label">Fecha Inicio</label>
+                    <div class="input-group date" data-provide="datepicker">
+                        <input type="text" class="form-control"  id="fechaInicioReporte" readonly>
+                        <span class="input-group-append">
+                            <span class="input-group-text bg-light d-block">
+                                <i class="bi bi-calendar-date"></i>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label for="fechaFinReporte" class="form-label">Fecha Fin</label>
+                    <div class="input-group date" data-provide="datepicker">
+                        <input type="text" class="form-control"  id="fechaFinReporte" readonly>
+                        <span class="input-group-append">
+                            <span class="input-group-text bg-light d-block">
+                                <i class="bi bi-calendar-date"></i>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-4" style="padding-top: 25px;">
+                    <button type="submit" class="btn btn-outline-dark" style="margin-right: 25px;">Limpiar</button>
+                    <button type="button" class="btn btn-primary" style="margin-right: 25px;" onclick="ConsultarReporte()">Buscar</button>
+                    <button type="button" class="btn btn-success" onclick="GenerarReporte()">Reporte</button>
+                </div>
+            </form>
+            <hr />
+            <div class="table-responsive">
+                <table class="table table-striped table-sm" id="data_table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Temperatura</th>
+                            <th scope="col">Peso</th>
+                            <th scope="col">Autorización</th>
+                            <th scope="col">Fecha Ingreso</th>
+                            <th scope="col">Fecha Salida</th>
+                            <th scope="col">Tiempo de enfriamiento</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bodyTablaReporte"></tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+<!--Modal de búsqueda de báscula-->
+<div class="modal fade" id="staticBackdropBasculaReporte" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Búsqueda</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3">
+                    <div class="col-md-4">
+                        <label for="codigoSerie_m" class="form-label-sm">Código</label>
+                        <input type="text" class="form-control" id="codigoBascula_m" placeholder="Ingrese código">
+                    </div>
+
+                    <div class="col-md-5">
+                        <label for="nombreBascula_m" class="form-label-sm">Nombre</label>
+                        <input type="text" class="form-control" id="nombreBascula_m" placeholder="Ingrese nombre">
+                    </div>
+
+                    <div class="col-md-1">
+                        <button type="button" class="btn-sm btn-primary" style="margin-top: 25px;" onclick="BuscarBascula()">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
+                <div class="row" style="padding-top:10%;">
+                    <br />
+                    <p>Resultados</p>
+                    <hr />
+                    <div id="liveAlertPlaceholder"></div>
+                    <table id="gridReporte" class="table table-hover" style="padding:10px;">
+                        <thead>
+                            <tr>
+                                <th scope="col">Código Serie</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyTabla">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" onclick="limpiarModalBasculaReporte()">Limpiar</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal de búsqueda de Túnel-->
+<div class="modal fade" id="staticBackdropTunelReporte" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Búsqueda</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3">
+                    <div class="col-md-5">
+                        <label for="codigoTunel_m" class="form-label-sm">Código</label>
+                        <input type="text" class="form-control" id="codigoTunel_m" placeholder="Ingrese código">
+                    </div>
+                    <div class="col-md-5">
+                        <label for="nombreTunel_m" class="form-label-sm">Nombre</label>
+                        <input type="text" class="form-control" id="nombreTunel_m" placeholder="Ingrese nombre">
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn-sm btn-primary" style="margin-top: 25px;" onclick="BuscarTunel()">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
+                <div class="row" style="padding-top:10%;">
+                    <br />
+                    <p>Resultados</p>
+                    <hr />
+                    <table id="gridTunel" class="table table-hover" style="padding:10px;">
+                        <thead>
+                            <tr>
+                                <th scope="col">Código</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyTablaTunel">
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" onclick="limpiarModalTunelReporte()">Limpiar</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const hoy = Date.now();
+    $.fn.datepicker.defaults.autoclose = true;
+    $.fn.datepicker.defaults.clearBtn = true;
+</script>

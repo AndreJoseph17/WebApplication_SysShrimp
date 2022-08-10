@@ -97,7 +97,6 @@ function validarFilaResultadosTunel() {
 }
 
 function Editar_Tunel(cod) {
-    alert("Se eligió el id " + cod);
     try {
         $.ajax({
             type: 'GET',
@@ -225,6 +224,17 @@ function GuardarTunel() {
                 
         }
 
+        if (Number(cantidad_min_peso) < 0 || Number(cantidad_max_peso) < 0) {
+            alert("No se permiten pesos negativos");
+            return;
+        }
+
+        if (Number(puerto_entrada) <= 0 || Number(puerto_salida) <= 0) {
+            alert("No se permiten ese valor en los puertos");
+            return;
+        }
+
+
         datosEnviar.codigo = codigo;
         datosEnviar.nombre = nombre;
         datosEnviar.cantidad_min_peso = cantidad_min_peso;
@@ -269,7 +279,7 @@ function GuardarTunel() {
                         alert("Túnel ingresado correctamente");
                         limpiarPantallaTunel();
                     } else {
-                        alert("Error al ingresar registro, revise los campos por favor ");
+                        alert(response.mensajeRespuesta);
                         return;
                     }
                 },

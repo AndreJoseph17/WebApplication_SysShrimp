@@ -84,7 +84,6 @@ function cargarDatos(consulta) {
         }
 
         $("#bodyTabla").append('<tr id = ' + codigo_bascula + '>' +
-            '<td align="left" style="dislay: none;">' + DatosJson[i].codigo + '</td>' +
             '<td align="left" style="dislay: none;">' + DatosJson[i].codigo_Serie + '</td>' +
             '<td align="left" style="dislay: none;">' + DatosJson[i].nombre + '</td>' +
             '<td align="left" style="dislay: none; background-color: ' + color + '; ">' + estado + '</td>' +
@@ -103,7 +102,6 @@ function validarFilaResultados() {
 }
 
 function Editar_Bascula(cod) {
-    alert("Se eligió el id " + cod);
     try {
         $.ajax({
             type: 'GET',
@@ -236,7 +234,7 @@ function GuardarBascula() {
                         alert("Báscula ingresada correctamente");
                         limpiar();
                     } else {
-                        alert("Error al ingresar registro ");
+                        alert(response.mensajeRespuesta);
                         return;
                     }
                 },

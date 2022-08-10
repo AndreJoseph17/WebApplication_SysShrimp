@@ -5,6 +5,10 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+IF OBJECT_ID('sp_tunel', 'P') IS NOT NULL  
+  DROP PROCEDURE sp_tunel
+  go
+
 CREATE PROCEDURE sp_tunel
 	@i_accion			char(1),
 	@i_usuario			varchar(20)	= null,

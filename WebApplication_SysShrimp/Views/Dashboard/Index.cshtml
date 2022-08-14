@@ -1,0 +1,74 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<head>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <link href="~/css/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+    <script src="~/js/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/lib/canvasjs/canvasjs.min.js"></script>
+    <script src="~/js/Dashboard/Dashboard.js"></script>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            Rango de fechas
+            <form class="row g-3">
+                <div class="col-md-3">
+                    <label for="fechaInicio" class="form-label">Fecha Inicio</label>
+                    <div class="input-group date" id="fechaInicio" data-provide="datepicker">
+                        <input type="text" class="form-control"  readonly>
+                        <span class="input-group-append">
+                            <span class="input-group-text bg-light d-block">
+                                <i class="bi bi-calendar-date"></i>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label for="fechaFin" class="form-label">Fecha Fin</label>
+                    <div class="input-group date" id="fechaFin" data-provide="datepicker">
+                        <input type="text" class="form-control"  readonly>
+                        <span class="input-group-append">
+                            <span class="input-group-text bg-light d-block">
+                                <i class="bi bi-calendar-date"></i>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-3" style="margin-top: 2em;">
+                    <button type="submit" class="btn btn-outline-dark" style="margin-right: 25px;">Limpiar</button>
+                    <button type="button" class="btn btn-primary" style="margin-right: 25px;" onclick="GenerarDashboard();">Filtrar</button>
+                </div>
+            </form>
+        </div>
+        <div class="card-body">
+            <div class="col-md-4">
+                <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+
+            </div>
+            <div class="col-md-4">
+
+
+            </div>
+            <div class="col-md-4">
+
+
+            </div>
+            <div class="col-md-4">
+
+
+            </div>
+            <div class="col-md-48">
+
+
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    $.fn.datepicker.defaults.autoclose = true;
+    $.fn.datepicker.defaults.clearBtn = true;
+</script>

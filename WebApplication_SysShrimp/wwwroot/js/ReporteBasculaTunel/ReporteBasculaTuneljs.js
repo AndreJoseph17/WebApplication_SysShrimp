@@ -3,14 +3,6 @@
 /**************************************************************************************/
 //Método para buscar básculas
 
-$(document).ready(function () {
-    //aquí el código que deseas ejecutar
-    $('#fechaInicioReporte').datepicker({
-        autoclose: true,
-        clearBtn: true
-    });
-});
-
 function limpiarModalBasculaReporte() {
     $("#codigoBascula_m").val('');
     $("#nombreBascula_m").val('');
@@ -222,11 +214,6 @@ function ConsultarReporte() {
         return;
     }
 
-
-
-    //var fecha_Inicio = fechaInicioReporte.toLocaleDateString();
-    //var fecha_Fin = fechaFinReporte.toLocaleDateString();
-
     let fecha_Inicio = fechaInicioReporte.getFullYear() + '/' +
         ((+fechaInicioReporte.getMonth() < 10) ? `0${fechaInicioReporte.getMonth() + 1}` : fechaInicioReporte.getMonth() + 1) + '/' +
         ((+fechaInicioReporte.getDate() < 10) ? `0${fechaInicioReporte.getDate()}` : fechaInicioReporte.getDate());
@@ -253,8 +240,8 @@ function ConsultarReporte() {
                     limpiarCamposReporte();
                 } else {
                     limpiarTablaReporte();
-                    $('#fechaInicioReporte').datepicker('update', '');
-                    $('#fechaFinReporte').datepicker('update', '');
+                    $('#fechaInicioReporte').datepicker('update');
+                    $('#fechaFinReporte').datepicker('update');
                     alert("No hay registros actualmente");
                     return;
                 }
@@ -317,8 +304,8 @@ function limpiarCamposReporte() {
 
     //$.datepicker._clearDate(this);
 
-    $('#fechaInicioReporte').datepicker('update', '');
-    $('#fechaFinReporte').datepicker('update', '');
+    $('#fechaInicioReporte').datepicker('update');
+    $('#fechaFinReporte').datepicker('update');
 
 }
 

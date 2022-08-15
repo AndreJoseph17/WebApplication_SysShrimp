@@ -12,6 +12,10 @@ namespace WebApplication_SysShrimp.Models
         public string Codigo_Tunel { get; set; }
         [JsonProperty("nombre_Tunel")]
         public string Nombre_Tunel { get; set; }
+        [JsonProperty("estado_Tunel")]
+        public string Estado_Tunel { get; set; }
+        [JsonProperty("peso_Maximo_Tunel")]
+        public decimal Peso_Maximo_Tunel { get; set; }
         [JsonProperty("codigo_Bascula")]
         public string Codigo_Bascula { get; set; }
         [JsonProperty("nombre_Bascula")]

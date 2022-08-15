@@ -8,6 +8,8 @@
     <link href="~/css/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
     <script src="~/js/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
     <script src="~/lib/ultimate-export/tableExport.js"></script>
+    <script src="~/lib/ultimate-export/libs/jsPDF/jspdf.min.js"></script>
+    <script src="~/lib/ultimate-export/libs/jsPDF/jspdf.plugin.autotable.min.js"></script>
     <script src="~/js/ReporteBasculaTunel/ReporteBasculaTuneljs.js"></script>
 </head>
 <h3>Reporte </h3>
@@ -49,7 +51,7 @@
                 <div class="col-md-3">
                     <label for="fechaInicioReporte" class="form-label">Fecha Inicio</label>
                     <div class="input-group date" id="fechaInicioReporte" data-provide="datepicker">
-                        <input type="text" class="form-control"   readonly>
+                        <input type="text" class="form-control" readonly>
                         <span class="input-group-append">
                             <span class="input-group-text bg-light d-block">
                                 <i class="bi bi-calendar-date"></i>
@@ -60,7 +62,7 @@
                 <div class="col-md-3">
                     <label for="fechaFinReporte" class="form-label">Fecha Fin</label>
                     <div class="input-group date" id="fechaFinReporte" data-provide="datepicker">
-                        <input type="text" class="form-control"   readonly>
+                        <input type="text" class="form-control" readonly>
                         <span class="input-group-append">
                             <span class="input-group-text bg-light d-block">
                                 <i class="bi bi-calendar-date"></i>
@@ -68,10 +70,17 @@
                         </span>
                     </div>
                 </div>
-                <div class="col-md-4" style="padding-top: 25px;">
-                    <button type="submit" class="btn btn-outline-dark" style="margin-right: 25px;">Limpiar</button>
-                    <button type="button" class="btn btn-primary" style="margin-right: 25px;" onclick="ConsultarReporte()">Buscar</button>
-                    <button type="button" class="btn btn-success" onclick="GenerarReporte()">Reporte</button>
+                <div class="col-md-5" style="padding-top: 25px;">
+                    <button type="submit" class="btn btn-outline-dark" style="margin-right: 15px;">Limpiar</button>
+                    <button type="button" class="btn btn-primary" style="margin-right:15px;" onclick="ConsultarReporte()">Buscar</button>
+                    <button type="button" class="btn btn-success" style="margin-right: 15px;" onclick="GenerarReporte()">
+                        Reporte
+                        <i class="bi bi-file-earmark-excel"></i>
+                    </button>
+                    <button type="button" class="btn" style="background-color: #EB1000; color: white" onclick="GenerarReportePDF()">
+                        Reporte
+                        <i class="bi bi-file-earmark-pdf"></i>
+                    </button>
                 </div>
             </form>
             <hr />
@@ -91,7 +100,7 @@
                     <tbody id="bodyTablaReporte"></tbody>
                 </table>
             </div>
-
+            <div id="elementH" hidden></div>
         </div>
     </div>
 </body>
@@ -207,4 +216,12 @@
     const hoy = Date.now();
     $.fn.datepicker.defaults.autoclose = true;
     $.fn.datepicker.defaults.clearBtn = true;
+
+    $('#fechaInicioReporte').datepicker({
+        endDate: '+0d'
+    });
+
+    $('#fechaFinReporte').datepicker({
+        endDate: '+0d'
+    });
 </script>

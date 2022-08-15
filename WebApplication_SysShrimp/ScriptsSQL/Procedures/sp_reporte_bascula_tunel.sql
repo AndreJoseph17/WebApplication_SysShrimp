@@ -26,6 +26,9 @@ BEGIN
 	begin
 		SELECT TUNEL.codigo			AS Codigo_Tunel
 			,TUNEL.nombre			AS Nombre_Tunel
+			,CASE WHEN TUNEL.activo = 1 THEN 'Activo' 
+			ELSE 'Inactivo' END		AS Estado_Tunel
+			,TUNEL.cantidad_max_peso	AS Peso_Maximo_Tunel
 			,BASCULA.codigo			AS Codigo_Bascula
 			,BASCULA.nombre			AS Nombre_Bascula
 			,BT.temperatura_actual	AS Temperatura_Tunel
@@ -38,13 +41,13 @@ BEGIN
 			END AS Autorizacion
 			,Dias_Diferencia
 		FROM tb_bitacora_tunel BT
-		LEFT JOIN tb_bitacora_bascula BB
+		INNER JOIN tb_bitacora_bascula BB
 			ON BT.id_bitacora_bascula_peso = BB.id_bitacora_bascula
-		LEFT JOIN tb_tunel TUNEL
+		INNER JOIN tb_tunel TUNEL
 			ON BT.id_tunel = TUNEL.id_tunel
-		LEFT JOIN tb_bascula BASCULA 
+		INNER JOIN tb_bascula BASCULA 
 			ON BB.id_bascula = BASCULA.id_bascula
-		LEFT JOIN (select	id_bitacora_tunel as id
+		INNER JOIN (select	id_bitacora_tunel as id
 					,fecha_ingreso
 					,fecha_salida
 					, case

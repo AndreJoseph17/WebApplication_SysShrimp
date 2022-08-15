@@ -3,6 +3,9 @@
 /**************************************************************************************/
 //Método para buscar básculas
 
+var nombreTunel = "", nombreBascula = "", codigoTunel = "", codigoBascula = "";
+
+
 function limpiarModalBasculaReporte() {
     $("#codigoBascula_m").val('');
     $("#nombreBascula_m").val('');
@@ -240,8 +243,8 @@ function ConsultarReporte() {
                     limpiarCamposReporte();
                 } else {
                     limpiarTablaReporte();
-                    $('#fechaInicioReporte').datepicker('update');
-                    $('#fechaFinReporte').datepicker('update');
+                    $('#fechaInicioReporte').datepicker('update', '');
+                    $('#fechaFinReporte').datepicker('update', '');
                     alert("No hay registros actualmente");
                     return;
                 }
@@ -258,7 +261,14 @@ function ConsultarReporte() {
 }
 
 function cargarDatosReporte(consulta) {
+
     let DatosJsonReporte = JSON.parse(JSON.stringify(consulta));
+
+    nombreTunel = DatosJsonReporte[0].nombre_Tunel;
+    nombreBascula = DatosJsonReporte[0].nombre_Bascula;
+    codigoTunel = DatosJsonReporte[0].codigo_Tunel;
+    codigoBascula = DatosJsonReporte[0].codigo_Bascula;
+
     for (i = 0; i < DatosJsonReporte.length; i++) {
 
         let color_Aut, color_dias;
@@ -304,8 +314,8 @@ function limpiarCamposReporte() {
 
     //$.datepicker._clearDate(this);
 
-    $('#fechaInicioReporte').datepicker('update');
-    $('#fechaFinReporte').datepicker('update');
+    $('#fechaInicioReporte').datepicker('update', '');
+    $('#fechaFinReporte').datepicker('update', '');
 
 }
 
@@ -317,4 +327,89 @@ function GenerarReporte() {
         ignoreColumn: []
     });
        
+}
+
+function GenerarReportePDF11() {
+    var doc = new jsPDF();
+    var elementHTML = $('#data_table').html();
+    var specialElementHandlers = {
+        '#elementH': function (element, renderer) {
+            return true;
+        }
+    };
+    doc.fromHTML(elementHTML, 15, 15, {
+        'width': 170,
+        'elementHandlers': specialElementHandlers
+    });
+    const tiempoTranscurrido = Date.now();
+    const fechaActual = new Date(tiempoTranscurrido);
+    // Save the PDF
+    doc.save('Reporte-' + fechaActual + '.pdf');
+}
+
+function GenerarReportePDF() {
+    var doc = new jsPDF('p', 'pt', 'letter');
+    var htmlstring = '';
+    var tempVarToCheckPageHeight = 0;
+    var pageHeight = 0;
+    pageHeight = doc.internal.pageSize.height;
+    specialElementHandlers = {
+        // element with id of "bypass" - jQuery style selector  
+        '#bypassme': function (element, renderer) {
+            // true = "handled elsewhere, bypass text extraction"  
+            return true
+        }
+    };
+    margins = {
+        top: 150,
+        bottom: 60,
+        left: 40,
+        right: 40,
+        width: 600
+    };
+    var y = 20;
+    doc.setLineWidth(2);
+    doc.text(200, y = y + 30, "Reporte de Bitácora - SysShrimp");
+    doc.text(50, y = y + 30, "Código Tunel: " + codigoTunel + " - Nombre túnel:  " + nombreTunel);
+    doc.text(50, y = y + 30, "Código Báscula: " + codigoBascula + " - Nombre báscula: " + nombreBascula);
+    doc.autoTable({
+        html: '#data_table',
+        startY: 120,
+        theme: 'grid',
+        columnStyles: {
+            0: {
+                cellWidth: 25,
+            },
+            1: {
+                cellWidth: 75,
+            },
+            2: {
+                cellWidth: 60,
+            },
+            3: {
+                cellWidth: 100,
+            },
+            4: {
+                cellWidth: 80,
+            },
+            5: {
+                cellWidth: 80,
+            },
+            6: {
+                cellWidth: 100,
+            }
+        },
+        styles: {
+            minCellHeight: 40
+        }
+    })
+    const tiempoTranscurrido = Date.now();
+    const fechaActual = new Date(tiempoTranscurrido);
+
+    nombreTunel = "";
+    nombreBascula = "";
+    codigoTunel = "";
+    codigoBascula = "";
+
+    doc.save('Reporte-' + fechaActual.toLocaleDateString() + '.pdf');
 }

@@ -4,11 +4,11 @@ $(document).ready(function () {
     $('#tabla2').hide();
     $('#reporteGeneral').hide();
     GenerarDashboard();
+    ObtenerListaTuneles();
 });
 
 function pruebaChart() {
-	var chart = new CanvasJS.Chart("pesajeTuneles", {
-		title: {
+	var chart = new CanvasJS.Chart("pesajeTuneles", {title: {
 			text: "My First Chart in CanvasJS"
 		},
 		data: [
@@ -251,4 +251,235 @@ function temperatura_tunel(response) {
     });
 
     chart.render();
+}
+
+function ObtenerListaTuneles() {
+    try {
+        $.ajax({
+            type: 'GET',
+            url: 'Tunel/Listar',
+            data: {
+            },
+            success: function (response) {
+                if (response != null && response.length > 0) {
+                    cargarDatosTunelLista(response);
+                } else {
+                    alert("No hay registros actualmente");
+                    return;
+                }
+            },
+            error: function () {
+                alert("Error al generar consulta");
+            }
+
+        });
+    } catch (e) {
+        alert("Error al generar la consulta");
+    }
+}
+
+function cargarDatosTunelLista(response) {
+    var select = $("#listaTuneles");
+    select.empty();
+    $('#listaTuneles').append('<option selected>Seleccione un túnel</option>');
+    var rsp = JSON.parse(JSON.stringify(response));
+    for (i = 0; i < rsp.length; i++) {
+        $('#listaTuneles').
+            append('<option value ="' + rsp[i].id_Tunel + '">' + rsp[i].nombre + '</option>');
+    }
+}
+
+function GenerarReporte() {
+    var idTunel = $("#listaTuneles option:selected").val()
+    let fechaInicioReporte = $('#fechaInicio').datepicker('getDate');
+    let fechaFinReporte = $('#fechaFin').datepicker('getDate');
+
+    if (fechaInicioReporte == null || fechaInicioReporte.length == 0) {
+        alert("Seleccione fecha de inicio de reporte");
+        return;
+    }
+
+    if (fechaFinReporte == null || fechaFinReporte.length == 0) {
+        alert("Seleccione fecha de fin de reporte");
+        return;
+    }
+
+    if (fechaInicioReporte > fechaFinReporte) {
+        alert("Seleccione un rango de fechas válido")
+        return;
+    }
+
+    let fecha_Inicio = fechaInicioReporte.getFullYear() + '/' +
+        ((+fechaInicioReporte.getMonth() < 10) ? `0${fechaInicioReporte.getMonth() + 1}` : fechaInicioReporte.getMonth() + 1) + '/' +
+        ((+fechaInicioReporte.getDate() < 10) ? `0${fechaInicioReporte.getDate()}` : fechaInicioReporte.getDate());
+
+    let fecha_Fin = fechaFinReporte.getFullYear() + '/' +
+        ((+fechaFinReporte.getMonth() < 10) ? `0${fechaFinReporte.getMonth() + 1}` : fechaFinReporte.getMonth() + 1) + '/' +
+        ((+fechaFinReporte.getDate() < 10) ? `0${fechaFinReporte.getDate()}` : fechaFinReporte.getDate());
+
+    try {
+        $.ajax({
+            type: 'GET',
+            url: 'ReporteBasculaTunel/ConsultarReporte',
+            data: {
+                id_tunel: idTunel,
+                fecha_Inicio: fecha_Inicio,
+                fecha_Fin: fecha_Fin
+            },
+            success: function (response) {
+                if (response != null && response.length > 0) {
+                    generarTiempoTunel(response);
+                    generarCantTunel(response);
+                    limpiarCampos();
+                } else {
+                    limpiarTablaReporte();
+                    $('#fechaInicioReporte').datepicker('update', '');
+                    $('#fechaFinReporte').datepicker('update', '');
+                    alert("No hay registros actualmente");
+                    return;
+                }
+            },
+            error: function (e) {
+                alert("Error al generar consulta");
+            }
+
+        });
+
+    } catch (e) {
+        alert("Se generó un error durante la consulta, reintente por favor");
+        return;
+    }
+
+    //Se realiza la consulta para generar el gráfico de Donut.
+    try {
+        $.ajax({
+            type: 'GET',
+            url: 'Dashboard/ConsultarTemperatura',
+            data: {
+                id_tunel: idTunel,
+                fecha_Inicio: fecha_Inicio,
+                fecha_Fin: fecha_Fin
+            },
+            success: function (response) {
+                if (response != null && response.length > 0) {
+                    generarTempTunel (response);
+                    limpiarCampos();
+                } else {
+                    limpiarTablaReporte();
+                    $('#fechaInicioReporte').datepicker('update', '');
+                    $('#fechaFinReporte').datepicker('update', '');
+                    alert("No hay registros actualmente");
+                    return;
+                }
+            },
+            error: function (e) {
+                alert("Error al generar consulta");
+            }
+
+        });
+
+    } catch (e) {
+        alert("Se generó un error durante la consulta, reintente por favor");
+        return;
+    }
+
+}
+
+function generarTiempoTunel(response) {
+    let valores = [];
+
+    $.each(response, function (key, value) {
+        valores.push({ label: value.nombre_Bascula, y: value.dias_Diferencia });
+
+    });
+    var chart = new CanvasJS.Chart("tiempoTunel", {
+        animationEnabled: true,
+        title: {
+            text: "Tunel - Cantidad"
+        },
+        axisY: {
+            title: "Tiempo",
+            suffix: "días",
+        },
+        data: [{
+            type: "splineArea",
+            color: "rgba(54,158,173,.7)",
+            dataPoints: valores  
+        }]
+    });
+    chart.render();
+
+}
+
+function generarTempTunel(response) {
+    let valores = [];
+    let nombreTunel = response[0].nombre_Tunel;
+
+    $.each(response, function (key, value) {
+        valores.push({ y: value.temperatura_Tunel, label: value.nombre_Dias + ' - ' + value.fecha.substring(0,10)});
+
+    });
+    var chart = new CanvasJS.Chart("tempTunel", {
+        theme: "light1",
+        animationEnabled: true,
+        title: {
+            text: "Temperatura de Túnel"
+        },
+        subtitles: [{
+            text: nombreTunel,
+            fontSize: 12
+        }],
+        data: [{
+            type: "pie",
+            indexLabelFontSize: 18,
+            radius: 80,
+            indexLabel: "{label} - {y}",
+            yValueFormatString: "###0.0\"°\"",
+            click: explodePie,
+            dataPoints: valores
+        }]
+    });
+    chart.render();
+
+    function explodePie(e) {
+        for (var i = 0; i < e.dataSeries.dataPoints.length; i++) {
+            if (i !== e.dataPointIndex)
+                e.dataSeries.dataPoints[i].exploded = false;
+        }
+    }
+}
+
+function generarCantTunel(response) {
+    let valores = [];
+    let nombreTunel = response[0].nombre_Tunel;
+
+    $.each(response, function (key, value) {
+        valores.push({ y: value.peso, label: value.nombre_Bascula });
+
+    });
+
+    var chart = new CanvasJS.Chart("cantTunel", {
+        animationEnabled: true,
+        title: {
+            text: nombreTunel + " - Pesaje",
+            horizontalAlign: "center"
+        },
+        data: [{
+            type: "doughnut",
+            startAngle: 60,
+            //innerRadius: 60,
+            indexLabelFontSize: 17,
+            indexLabel: "{label} - #percent%",
+            toolTipContent: "<b>{label}:</b> {y} (#percent%)",
+            dataPoints: valores
+        }]
+    });
+    chart.render();
+
+}
+
+function limpiarCampos() {
+
+    $('#fechaInicio').datepicker('update', '');
+    $('#fechaFin').datepicker('update', '');
 }

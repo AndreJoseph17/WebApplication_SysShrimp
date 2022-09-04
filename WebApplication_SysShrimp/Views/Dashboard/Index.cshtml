@@ -119,14 +119,31 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="col-md-3" style="margin-top: 2em;">
+                                <div class="col-md-3">
+                                    <label for="tuneles" class="form-label">Seleccionar túnel</label>
+                                    <select id="listaTuneles" class="form-select form-select mb-3" aria-label=".form-select">
+                                    </select>
+                                </div>
+                                <div class="col-md-3" style="margin-top: 5%;">
+                                    <button type="button" class="btn btn-primary" style="margin-right: 25px;" onclick="GenerarReporte();">Filtrar</button>
                                     <button type="submit" class="btn btn-outline-dark" style="margin-right: 25px;">Limpiar</button>
-                                    <button type="button" class="btn btn-primary" style="margin-right: 25px;" onclick="GenerarDashboard();">Filtrar</button>
                                 </div>
                             </form>
                         </div>
                         <div class="card-body">
-
+                            <div class="row">
+                                <div class="col">
+                                    <div id="tiempoTunel" style="height: 200px; width: 60%; margin-top: 20px; margin-bottom: 20px; margin-left: 15%; margin-right: 15%;"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div id="tempTunel" style="height: 300px; width: 90%;"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div id="cantTunel" style="height: 300px; width: 90%;"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -138,4 +155,13 @@
 <script>
     $.fn.datepicker.defaults.autoclose = true;
     $.fn.datepicker.defaults.clearBtn = true;
+
+    const hoy = Date.now();
+    $('#fechaInicio').datepicker({
+        endDate: '+0d'
+    });
+
+    $('#fechaFin').datepicker({
+        endDate: '+0d'
+    });
 </script>

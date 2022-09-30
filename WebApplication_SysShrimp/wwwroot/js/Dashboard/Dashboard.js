@@ -1,10 +1,13 @@
-﻿
+﻿/// <reference path="../bascula/bascula.js" />
+/// <reference path="../bascula/bascula.js" />
+
 $(document).ready(function () {
     $('#tabla1').hide();
     $('#tabla2').hide();
     $('#reporteGeneral').hide();
     GenerarDashboard();
     ObtenerListaTuneles();
+    $('#alerta').hide();
 });
 
 function pruebaChart() {
@@ -83,12 +86,14 @@ function GenerarDashboard() {
 function pesaje_tunel(response) {
     let valores = [];
     let colores = [];
+    let alerta = "";
 
     $.each(response, function (key, value) {
         let colorColumna = "";
         valores.push({ y: parseFloat(value.peso), label: value.nombre_Tunel });
         if (value.peso >= value.peso_Maximo_Tunel) {
             colorColumna = "#FF3A3A"; //rojo
+            alerta += 'Túnel: ' + value.nombre_Tunel + '</br>';
         } else if (value.peso >= (value.peso_Maximo_Tunel / 2) && value.peso < value.peso_Maximo_Tunel) {
             colorColumna = "#E7E429"; //amarillo
         } else {
@@ -119,16 +124,24 @@ function pesaje_tunel(response) {
     });
   
     chart.render();
+
+    if (alerta != null && alerta.length > 0) {
+        alerta += ' En ' + '<b>Pesaje de túneles!</b>';
+        alarma(alerta, 'liveAlertPlaceholder1');
+    }
 }
 
 function tiempo_Camaraon(response) {
     let valores = [];
     let colores = [];
+    let colorColumna = "";
+    let alerta = "";
 
     $.each(response, function (key, value) {
         valores.push({ y: parseFloat(value.dias_Diferencia), label: value.nombre_Bascula });
         if (value.dias_Diferencia >= 7) {
             colorColumna = "#FF3A3A";
+            alerta += 'Báscula: ' + value.nombre_Bascula + '</br>';
         } else if (value.peso >= 2 && value.peso < 7) {
             colorColumna = "#E7E429";
         } else {
@@ -159,6 +172,11 @@ function tiempo_Camaraon(response) {
     });
 
     chart.render();
+
+    if (alerta != null && alerta.length > 0) {
+        alerta += ' En ' + '<b>Tiempo Camarón!</b>';
+        alarma(alerta, 'liveAlertPlaceholder2');
+    }
 }
 function limpiarCuadrosFecha() {
     $('#fechaInicio').datepicker('update', '');
@@ -218,12 +236,14 @@ function tablaTunelTemperatura(response) {
 function temperatura_tunel(response) {
     let valores = [];
     let colores = [];
+    let alerta = "";
 
     $.each(response, function (key, value) {
         valores.push({ y: parseFloat(value.temperatura_Tunel), label: value.nombre_Tunel });
         if (value.temperatura_Tunel <= -18 || value.temperatura_Tunel >= -20 ) {
-            colorColumna = "#0AC621"; 
+            colorColumna = "#0AC621";
         } else {
+            alerta += 'Túnel: ' + value.nombre_Tunel + '</br>';
             colorColumna = "#FF3A3A";
         }
         colores.push(colorColumna);
@@ -251,6 +271,11 @@ function temperatura_tunel(response) {
     });
 
     chart.render();
+
+    if (alerta != null && alerta.length > 0) {
+        alerta += ' En ' + '<b>Temperatura Túnel!</b>';
+        alarma(alerta, 'liveAlertPlaceholder3');
+    }
 }
 
 function ObtenerListaTuneles() {
@@ -482,4 +507,31 @@ function limpiarCampos() {
 
     $('#fechaInicio').datepicker('update', '');
     $('#fechaFin').datepicker('update', '');
+}
+
+function alarma(values, div) {
+    var alertPlaceholder = document.getElementById(div)
+    var wrapper = document.createElement('div')
+
+    wrapper.innerHTML = '<div class="alert alert-danger alert-dismissible" role="alert"> Revisar ' + values +
+        '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+
+    alertPlaceholder.append(wrapper);
+    var audio = new Audio('../../lib/alarm.mp3');
+    audio.play();
+
+    //setInterval(
+    //    function () {
+        
+    //    var audio = new Audio('../../lib/alarm.mp3');
+
+    //    // al finalizar el sonido escondemos el mensaje de "Alarma sonando"
+    //    audio.onended = function () {
+    //        document.getElementById("alerta").innerHTML = "";
+    //    };
+    //document.getElementById("alerta").innerHTML = "Revisar " + values + "</br>";
+    //$("#alerta").append( 'Revisar '+ values+'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
+
+    //    // Iniciamos el sonido
+    //    audio.play();
 }

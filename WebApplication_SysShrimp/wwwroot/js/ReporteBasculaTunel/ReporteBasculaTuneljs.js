@@ -329,24 +329,6 @@ function GenerarReporte() {
        
 }
 
-function GenerarReportePDF11() {
-    var doc = new jsPDF();
-    var elementHTML = $('#data_table').html();
-    var specialElementHandlers = {
-        '#elementH': function (element, renderer) {
-            return true;
-        }
-    };
-    doc.fromHTML(elementHTML, 15, 15, {
-        'width': 170,
-        'elementHandlers': specialElementHandlers
-    });
-    const tiempoTranscurrido = Date.now();
-    const fechaActual = new Date(tiempoTranscurrido);
-    // Save the PDF
-    doc.save('Reporte-' + fechaActual + '.pdf');
-}
-
 function GenerarReportePDF() {
     var doc = new jsPDF('p', 'pt', 'letter');
     var htmlstring = '';
@@ -405,11 +387,6 @@ function GenerarReportePDF() {
     })
     const tiempoTranscurrido = Date.now();
     const fechaActual = new Date(tiempoTranscurrido);
-
-    nombreTunel = "";
-    nombreBascula = "";
-    codigoTunel = "";
-    codigoBascula = "";
 
     doc.save('Reporte-' + fechaActual.toLocaleDateString() + '.pdf');
 }

@@ -1,5 +1,4 @@
-﻿/// <reference path="../bascula/bascula.js" />
-/// <reference path="../bascula/bascula.js" />
+﻿
 
 $(document).ready(function () {
     $('#tabla1').hide();
@@ -40,12 +39,12 @@ function GenerarDashboard() {
     const fechaFin = new Date(tiempoTranscurrido);
 
     let fecha_Inicio = fechaInicio.getFullYear() + '/' +
-        ((+fechaInicio.getMonth() < 10) ? `0${fechaInicio.getMonth() + 1}` : fechaInicio.getMonth() + 1) + '/' +
-        ((+fechaInicio.getDate() < 10) ? `0${fechaInicio.getDate()}` : fechaInicio.getDate());
+        ((+fechaInicio.getMonth() < 9) ? `0${fechaInicio.getMonth() + 1}` : fechaInicio.getMonth() + 1) + '/' +
+        ((+fechaInicio.getDate() < 9) ? `0${fechaInicio.getDate()}` : fechaInicio.getDate());
 
     let fecha_Fin = fechaFin.getFullYear() + '/' +
-        ((+fechaFin.getMonth() < 10) ? `0${fechaFin.getMonth() + 1}` : fechaFin.getMonth() + 1) + '/' +
-        ((+fechaFin.getDate() < 10) ? `0${fechaFin.getDate()}` : fechaFin.getDate());
+        ((+fechaFin.getMonth() < 9) ? `0${fechaFin.getMonth() + 1}` : fechaFin.getMonth() + 1) + '/' +
+        ((+fechaFin.getDate() < 9) ? `0${fechaFin.getDate()}` : fechaFin.getDate());
 
     try {
         $.ajax({
@@ -335,12 +334,12 @@ function GenerarReporte() {
     }
 
     let fecha_Inicio = fechaInicioReporte.getFullYear() + '/' +
-        ((+fechaInicioReporte.getMonth() < 10) ? `0${fechaInicioReporte.getMonth() + 1}` : fechaInicioReporte.getMonth() + 1) + '/' +
-        ((+fechaInicioReporte.getDate() < 10) ? `0${fechaInicioReporte.getDate()}` : fechaInicioReporte.getDate());
+        ((+fechaInicioReporte.getMonth() < 9) ? `0${fechaInicioReporte.getMonth() + 1}` : fechaInicioReporte.getMonth() + 1) + '/' +
+        ((+fechaInicioReporte.getDate() < 9) ? `0${fechaInicioReporte.getDate()}` : fechaInicioReporte.getDate());
 
     let fecha_Fin = fechaFinReporte.getFullYear() + '/' +
-        ((+fechaFinReporte.getMonth() < 10) ? `0${fechaFinReporte.getMonth() + 1}` : fechaFinReporte.getMonth() + 1) + '/' +
-        ((+fechaFinReporte.getDate() < 10) ? `0${fechaFinReporte.getDate()}` : fechaFinReporte.getDate());
+        ((+fechaFinReporte.getMonth() < 9) ? `0${fechaFinReporte.getMonth() + 1}` : fechaFinReporte.getMonth() + 1) + '/' +
+        ((+fechaFinReporte.getDate() < 9) ? `0${fechaFinReporte.getDate()}` : fechaFinReporte.getDate());
 
     try {
         $.ajax({

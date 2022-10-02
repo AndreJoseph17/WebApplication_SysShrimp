@@ -218,12 +218,12 @@ function ConsultarReporte() {
     }
 
     let fecha_Inicio = fechaInicioReporte.getFullYear() + '/' +
-        ((+fechaInicioReporte.getMonth() < 10) ? `0${fechaInicioReporte.getMonth() + 1}` : fechaInicioReporte.getMonth() + 1) + '/' +
-        ((+fechaInicioReporte.getDate() < 10) ? `0${fechaInicioReporte.getDate()}` : fechaInicioReporte.getDate());
+        ((+fechaInicioReporte.getMonth() < 9) ? `0${fechaInicioReporte.getMonth() + 1}` : fechaInicioReporte.getMonth() + 1) + '/' +
+        ((+fechaInicioReporte.getDate() < 9) ? `0${fechaInicioReporte.getDate()}` : fechaInicioReporte.getDate());
 
     let fecha_Fin = fechaFinReporte.getFullYear() + '/' +
-        ((+fechaFinReporte.getMonth() < 10) ? `0${fechaFinReporte.getMonth() + 1}` : fechaFinReporte.getMonth() + 1) + '/' +
-        ((+fechaFinReporte.getDate() < 10) ? `0${fechaFinReporte.getDate()}` : fechaFinReporte.getDate());
+        ((+fechaFinReporte.getMonth() < 9) ? `0${fechaFinReporte.getMonth() + 1}` : fechaFinReporte.getMonth() + 1) + '/' +
+        ((+fechaFinReporte.getDate() < 9) ? `0${fechaFinReporte.getDate()}` : fechaFinReporte.getDate());
 
 
     try {

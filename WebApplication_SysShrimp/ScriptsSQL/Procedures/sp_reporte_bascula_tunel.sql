@@ -61,4 +61,84 @@ BEGIN
 		and bt.fecha_ingreso between ISNULL(@i_fecha_ingreso, bt.fecha_ingreso) and ISNULL(@i_fecha_salida, bt.fecha_salida)
 		and bt.fecha_salida  between ISNULL(@i_fecha_ingreso, bt.fecha_ingreso) and ISNULL(@i_fecha_salida, bt.fecha_salida)
 	end
+	else if @i_accion = 'D'
+	begin 
+
+	SELECT TOP 5 TUNEL.codigo			AS Codigo_Tunel
+			,TUNEL.nombre			AS Nombre_Tunel
+			,CASE WHEN TUNEL.activo = 1 THEN 'Activo' 
+			ELSE 'Inactivo' END		AS Estado_Tunel
+			,BT.fecha_ingreso		AS Fecha_Ingreso
+			,BT.fecha_salida		AS Fecha_Salida
+			,TUNEL.cantidad_max_peso	AS Peso_Maximo_Tunel
+			,BT.cajas_entrantas		AS Cajas_Entrantes
+			,BT.cajas_salientes		AS Cajas_Salientes
+			,FORMAT(ROUND(BT.peso_entrante, 2), 'N', 'en-us')as Peso_Entrante 
+			,FORMAT(ROUND(BT.peso_saliente, 2), 'N', 'en-us')as Peso_Saliente
+			,Dias_Diferencia
+		FROM tb_bitacora_tunel BT
+		INNER JOIN tb_bitacora_bascula BB
+			ON BT.id_bitacora_bascula_peso = BB.id_bitacora_bascula
+		INNER JOIN tb_tunel TUNEL
+			ON BT.id_tunel = TUNEL.id_tunel
+		INNER JOIN (select	id_bitacora_tunel as id
+					,fecha_ingreso
+					,fecha_salida
+					, case
+						when fecha_salida is not null then DATEDIFF(day, fecha_ingreso, fecha_salida)
+						else DATEDIFF(day, fecha_ingreso, GETDATE())
+					end as Dias_Diferencia
+					FROM tb_bitacora_tunel) FECHAS
+		ON BT.id_bitacora_tunel = FECHAS.id
+		WHERE BT.id_tunel = CASE WHEN @i_id_tunel = 0 THEN bt.id_tunel ELSE ISNULL(@i_id_tunel, bt.id_tunel) END
+		and bb.id_bascula = CASE WHEN @i_id_bascula = 0 THEN bb.id_bascula ELSE  ISNULL(@i_id_bascula, bb.id_bascula) END
+		and bt.fecha_ingreso between ISNULL(@i_fecha_ingreso, bt.fecha_ingreso) and ISNULL(@i_fecha_salida, bt.fecha_salida)
+		and bt.fecha_salida  between ISNULL(@i_fecha_ingreso, bt.fecha_ingreso) and ISNULL(@i_fecha_salida, bt.fecha_salida)
+		ORDER BY BT.fecha_ingreso DESC, BT.fecha_salida DESC
+	end
+	else if @i_accion = 'R'
+	begin
+		SELECT TOP 10  TUNEL.codigo			AS Codigo_Tunel
+			,TUNEL.nombre			AS Nombre_Tunel
+			,CASE WHEN TUNEL.activo = 1 THEN 'Activo' 
+			ELSE 'Inactivo' END		AS Estado_Tunel
+			,TUNEL.cantidad_max_peso	AS Peso_Maximo_Tunel
+			,BASCULA.codigo			AS Codigo_Bascula
+			,BASCULA.nombre			AS Nombre_Bascula
+			,BT.temperatura_actual	AS Temperatura_Tunel
+			,BB.PESO				AS Peso
+			,BT.fecha_ingreso		AS Fecha_Ingreso
+			,BT.fecha_salida		AS Fecha_Salida
+			,BT.cajas_entrantas		AS Cajas_Entrantes
+			,BT.cajas_salientes		AS Cajas_Salientes
+			,BT.peso_entrante		AS Peso_Entrante
+			,BT.peso_saliente		AS Peso_Saliente
+			,CASE 
+				WHEN BT.fecha_salida IS NOT NULL THEN 'Autorizada'
+				ELSE 'No Autorizada'
+			END AS Autorizacion
+			,Dias_Diferencia
+		FROM tb_bitacora_tunel BT
+		INNER JOIN tb_bitacora_bascula BB
+			ON BT.id_bitacora_bascula_peso = BB.id_bitacora_bascula
+		INNER JOIN tb_tunel TUNEL
+			ON BT.id_tunel = TUNEL.id_tunel
+		INNER JOIN tb_bascula BASCULA 
+			ON BB.id_bascula = BASCULA.id_bascula
+		INNER JOIN (select	id_bitacora_tunel as id
+					,fecha_ingreso
+					,fecha_salida
+					, case
+						when fecha_salida is not null then DATEDIFF(day, fecha_ingreso, fecha_salida)
+						else DATEDIFF(day, fecha_ingreso, GETDATE())
+					end as Dias_Diferencia
+					FROM tb_bitacora_tunel) FECHAS
+		ON BT.id_bitacora_tunel = FECHAS.id
+		WHERE BT.id_tunel = CASE WHEN @i_id_tunel = 0 THEN bt.id_tunel ELSE ISNULL(@i_id_tunel, bt.id_tunel) END
+		and bb.id_bascula = CASE WHEN @i_id_bascula = 0 THEN bb.id_bascula ELSE  ISNULL(@i_id_bascula, bb.id_bascula) END
+		and bt.fecha_ingreso between ISNULL(@i_fecha_ingreso, bt.fecha_ingreso) and ISNULL(@i_fecha_salida, bt.fecha_salida)
+		and bt.fecha_salida  between ISNULL(@i_fecha_ingreso, bt.fecha_ingreso) and ISNULL(@i_fecha_salida, bt.fecha_salida)
+		ORDER BY fecha_ingreso DESC
+	end
+		
 END

@@ -14,27 +14,11 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <div id="liveAlertPlaceholder1" class="col"></div>
-                <div id="liveAlertPlaceholder2" class="col"></div>
-                <div id="liveAlertPlaceholder3" class="col"></div>
-            </div>
-            <div class="row">
-                <div class="col" style="padding-left: 77%;">
-                    <button type="button" class="btn btn-primary" onClick="window.location.reload();">
-                        Actualizar Dashboard
-                    </button>
-                    <button type="button" class="btn btn-success" onclick="location.href='/'">
-                        Pantalla Principal
-                    </button>
-                </div>
-            </div>
-            <hr />
-            <div class="row">
                 <div class="col-md-4">
-                    <div id="pesajeTuneles" style="height: 400px; width: 85%; margin-top: 50px; margin-bottom: 50px;"></div>
+                    <div id="pesajeTuneles" style="height: 400px; width: 95%; margin-top: 50px; margin-bottom: 30px;"></div>
                 </div>
                 <div class="col-md-4">
-                    <div id="tiempoCamaron" style="height: 400px; width: 85%; margin-top: 50px; margin-bottom: 50px;"></div>
+                    <div id="tiempoCamaron" style="height: 400px; width: 95%; margin-top: 50px; margin-bottom: 30px;"></div>
                 </div>
                 <div class="col-md-4">
                     <div class="row" id="tabla1" style="max-height: 250px; width: 100%; margin-bottom: 35px;">
@@ -45,8 +29,9 @@
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Túnel</th>
-                                        <th scope="col">Paquete</th>
-                                        <th scope="col">Pesaje</th>
+                                        <th scope="col">Cajas Entrantes</th>
+                                        <th scope="col">Cajas Salientes</th>
+                                        <th scope="col">Pesaje(.lb)</th>
                                         <th scope="col">Estado</th>
                                         <th scope="col">Tiempo</th>
                                         <th scope="col">Autorización</th>
@@ -78,9 +63,20 @@
             </div>
             <div class="row">
                 <div class="col-md-4">
+                    <div id="liveAlertPlaceholder1" class="col"></div>
+                </div>
+                <div class="col-md-4">
+                    <div id="liveAlertPlaceholder2" class="col"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
                     <div class="row">
-                        <div id="temperaturaTuneles" style="height: 300px; width: 85%; "></div>
+                        <div id="temperaturaTuneles" style="height: 400px; width: 85%; "></div>
 
+                    </div>
+                    <div class="row">
+                        <div id="liveAlertPlaceholder3" class="col"></div>
                     </div>
                     <div class="row" style="margin-top: 10px;">
                         <p style="text-align: center"><b>Indicaciones</b></p>
@@ -106,8 +102,9 @@
                             </p>
                         </div>
                     </div>
+                    
                 </div>
-                <div class="col-md-8" id="reporteGeneral" style="margin-top: 3em;">
+                <div class="col-md-8" id="reporteGeneral" style="margin-top: 7%;">
                     <div class="card">
                         <div class="card-header">
                             <p style="text-align: center; font-size: 15px;"><b>Reporte General Dependiendo del Cliente</b></p>
@@ -148,16 +145,58 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col">
-                                    <div id="tiempoTunel" style="height: 200px; width: 60%; margin-top: 20px; margin-bottom: 20px; margin-left: 15%; margin-right: 15%;"></div>
+                                <div id="filtro" class="alert alert-primary" role="alert">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div id="tempTunel" style="height: 300px; width: 90%;"></div>
+                                    <div id="tiempoTunel" style="height: 200px; width: 90%; margin-top: 20px; margin-bottom: 20px;"></div>
+                                    <div id="infoTiempoTunel" class="alert alert-info" role="alert">
+                                      
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
+                                    <div id="tiempoTunel2" style="height: 200px; width: 90%; margin-top: 20px; margin-bottom: 20px;"></div>
+                                    <div id="infoTiempoTunel2" class="alert alert-info" role="alert">
+                                      
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div id="tempTunel" style="height: 300px; width: 90%; padding-top: 3%;"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div id="tempTunel2" style="height: 300px; width: 90%;padding-top: 3%;"></div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 3%;">
+                                <div class="row" id="tabla5" style="max-height: 250px; width: 100%;">
+                                    <p style="text-align: center"><b>Temperatura</b></p>
+                                    <div class="table-responsive" style="max-height: 245px;">
+                                        <table class="table table-striped table-sm" id="data_table5">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Mes</th>
+                                                    <th scope="col">Semana</th>
+                                                    <th scope="col">Fecha</th>
+                                                    <th scope="col">Temperatura mínima</th>
+                                                    <th scope="col">Temperatura máxima</th>
+                                                    <th scope="col">Observaciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tableTemperaturaTunelReporte"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-top: 10%;">
+                                <div class="col-md-6">
                                     <div id="cantTunel" style="height: 300px; width: 90%;"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div id="cantTunel2" style="height: 300px; width: 90%;"></div>
                                 </div>
                             </div>
                         </div>
@@ -179,5 +218,21 @@
 
     $('#fechaFin').datepicker({
         endDate: '+0d'
+    });
+
+    $(document).ready(function () {
+    function dashboard() {
+        $('#tabla1').hide();
+        $('#tabla2').hide();
+        $('#reporteGeneral').hide();
+        $('#filtro').hide();
+        $('#infoTiempoTunel').hide();
+        $('#infoTiempoTunel2').hide();
+        GenerarDashboard();
+        ObtenerListaTuneles();
+        $('#alerta').hide();
+        $('#tabla5').hide();
+    }
+    setInterval(dashboard, 30000);
     });
 </script>

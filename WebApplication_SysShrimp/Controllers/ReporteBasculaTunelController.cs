@@ -28,8 +28,47 @@ namespace WebApplication_SysShrimp.Controllers
         {
             try
             {
-                var response = await reporteBasculaTunelOperaciones.Consultar(request);
+                var response = await reporteBasculaTunelOperaciones.Consultar (request);
                 if(response != null)
+                {
+                    return Json(response);
+                }
+                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante la consulta" });
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error al realizar la consulta " });
+            }
+
+        }
+        [HttpGet]
+        public async Task<JsonResult> ConsultarPesajeTuneles(ReporteBasculaTunelRequest request)
+        {
+            try
+            {
+                var response = await reporteBasculaTunelOperaciones.ConsultarPesajeTunel(request);
+                if (response != null)
+                {
+                    return Json(response);
+                }
+                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error durante la consulta" });
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new Response { ProcesoExitoso = false, MensajeRespuesta = "Error al realizar la consulta " });
+            }
+
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> ConsultarPesajeTunelesTablas(ReporteBasculaTunelRequest request)
+        {
+            try
+            {
+                var response = await reporteBasculaTunelOperaciones.ConsultarPesajeTunelTabla(request);
+                if (response != null)
                 {
                     return Json(response);
                 }

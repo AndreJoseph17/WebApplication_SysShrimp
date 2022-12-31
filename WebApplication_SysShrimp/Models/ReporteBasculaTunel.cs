@@ -32,5 +32,13 @@ namespace WebApplication_SysShrimp.Models
         public string Autorizacion { get; set; }
         [JsonProperty("dias_Diferencia")]
         public int Dias_Diferencia { get; set; }
+        [JsonProperty("cajas_Entrantes")]
+        public decimal Cajas_Entrantes { get; set; }
+        [JsonProperty("cajas_Salientes")]
+        public decimal Cajas_Salientes { get; set; }
+        [JsonProperty("peso_Entrante")]
+        public decimal Peso_Entrante { get; set; }
+        [JsonProperty("peso_Saliente")]
+        public decimal Peso_Saliente { get; set; }
     }
 }

@@ -24,5 +24,15 @@ namespace WebApplication_SysShrimp.Models
         public string Nombre_Dias { get; set; }
         [JsonProperty("numero_Semana")]
         public int Numero_Semana { get; set; }
+        [JsonProperty("temp_minima")]
+        public decimal Temp_minima { get; set; }
+        [JsonProperty("temp_maxima")]
+        public decimal Temp_maxima { get; set; }
+        [JsonProperty("observacion")]
+        public string Observacion { get; set; }
+        [JsonProperty("mes")]
+        public string Mes { get; set; }
+        [JsonProperty("semana")]
+        public int Semana { get; set; }
     }
 }
